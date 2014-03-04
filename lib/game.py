@@ -5,7 +5,13 @@ class Game(object):
     def __init__(self, fps):
         self.fps = fps
 
-    def on_message(self, message):
+    def on_client_connect(self, websocket):
+        raise NotImplementedError()
+
+    def on_client_disconnect(self, player):
+        raise NotImplementedError()
+
+    def on_message_received(self, message):
         raise NotImplementedError()
 
     def update(self, delta):
