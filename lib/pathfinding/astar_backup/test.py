@@ -1,7 +1,6 @@
 from astarplanner import AStarPlanner
 from polygon import Polygon
 
-import numpy
 from util import (
     intersect_single,
     line_intersect,
@@ -16,23 +15,23 @@ def basic_intersection_test():
     poly.add_point(-1, 1)
     poly.add_point(-1, 0)
 
-    line = [numpy.array([0, 0]), numpy.array([0, 1])]
+    line = [[0, 0], [0, 1]]
     assert(intersect_single(line, poly) == True)
 
-    line = [numpy.array([0, 1]), numpy.array([-1, 1])]
+    line = [[0, 1], [-1, 1]]
     assert(intersect_single(line, poly) == True)
 
-    line = [numpy.array([-1, 1]), numpy.array([-1, 0])]
+    line = [[-1, 1], [-1, 0]]
     assert(intersect_single(line, poly) == True)
 
-    line = [numpy.array([-1, 0]), numpy.array([0, 0])]
+    line = [[-1, 0], [0, 0]]
     assert(intersect_single(line, poly) == True)
 
 def line_intersection_test():
-    a = numpy.array([1, 0])
-    b = numpy.array([1, 1])
-    c = numpy.array([0, 1])
-    d = numpy.array([0, 0])
+    a = [1, 0]
+    b = [1, 1]
+    c = [0, 1]
+    d = [0, 0]
 
     line_a = [a, b]
     line_b = [b, c]

@@ -1,5 +1,3 @@
-import numpy
-
 class Node(object):
     def __init__(self, x, y):
         self.x = x
@@ -7,7 +5,7 @@ class Node(object):
         self.neighbors = []
 
     def point(self):
-        return numpy.array([self.x, self.y])
+        return [self.x, self.y]
 
     def __eq__(self, other):
         if isinstance(other, Node):

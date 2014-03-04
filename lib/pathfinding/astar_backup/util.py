@@ -37,7 +37,7 @@ def line_intersect(line_segment_a, line_segment_b):
 
 def _compute_t_value(intersector, intersectee):
     intersectee_dir = intersectee[1] - intersectee[0]
-    normal = numpy.array([intersectee_dir[1], -intersectee_dir[0]])
+    normal = [intersectee_dir[1], -intersectee_dir[0]]
 
     A = intersector[0]
     B = intersector[1]
