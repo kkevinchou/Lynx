@@ -61,9 +61,9 @@ def basic_path_test():
     print astarplanner.find_path(-1, -1, 1000, 1000)
 
 tests = [
-    # basic_intersection_test,
+    basic_intersection_test,
     line_intersection_test,
-    # basic_path_test,
+    basic_path_test,
 ]
 
 for test in tests:
