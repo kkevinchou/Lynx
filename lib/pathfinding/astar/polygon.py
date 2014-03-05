@@ -1,3 +1,5 @@
+from lib.vec2d import Vec2d
+
 class Polygon(object):
 	def __init__(self):
 		self.points = []
@@ -6,7 +8,7 @@ class Polygon(object):
 		return self.points
 
 	def add_point(self, x, y):
-		self.points.append([x, y])
+		self.points.append(Vec2d(x, y))
 
 	def get_edges(self):
 		num_points = len(self.points)

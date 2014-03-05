@@ -3,7 +3,7 @@ from Queue import PriorityQueue
 from heapq import heappush, heappop
 from util import (
     distance_between,
-    intersect_multi,
+    intersect_polygons,
     create_line_segment,
 )
 
@@ -20,7 +20,7 @@ class AStarPlanner(object):
         
         polygon_points = polygon.get_points()
         for point in polygon_points:
-            self.nodes.append(Node(point[0], point[1]))
+            self.nodes.append(Node(point))
 
     def compute_neighbours(self):
         for node_a in self.nodes:
@@ -28,7 +28,7 @@ class AStarPlanner(object):
                 if node_a == node_b:
                     continue
 
-                if not intersect_multi(create_line_segment(node_a, node_b), self.polygons):
+                if not intersect_polygons(create_line_segment(node_a, node_b), self.polygons):
                     node_a.neighbors.append(node_b)
 
     def get_closest_node(self, node):
@@ -57,7 +57,7 @@ class AStarPlanner(object):
         self.compute_neighbours()
 
         # check for direct los from start_node to goal_node
-        # if not intersect_multi([start_node, goal_node], self.polygons):
+        # if not intersect_polygons([start_node, goal_node], self.polygons):
         #     return [start_node, goal_node]
 
         closest_node = self.get_closest_node(start_node)
