@@ -29,6 +29,9 @@ def intersect_polygon(line_segment, polygon):
         if shares_point(line_segment, edge) and colinear(line_segment, edge):
             return False
 
+    if shares_point(line_segment, edge):
+        return False
+
     for edge in polygon.get_edges():
         if line_intersect(line_segment, edge):
             return True

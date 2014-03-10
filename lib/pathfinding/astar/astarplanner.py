@@ -53,6 +53,7 @@ class AStarPlanner(object):
         start_node = Node(x1, y1)
         goal_node = Node(x2, y2)
 
+        self.add_node(start_node)
         self.add_node(goal_node)
         self.compute_neighbours()
 
@@ -60,50 +61,63 @@ class AStarPlanner(object):
         # if not intersect_polygons([start_node, goal_node], self.polygons):
         #     return [start_node, goal_node]
 
-        closest_node = self.get_closest_node(start_node)
+        # closest_node = self.get_closest_node(start_node)
 
         closed_set = set()
-        open_set = set()
         open_queue = []
 
         # key: node, value: previous_node_in_path
         path_map = {}
-        heappush(open_queue, (0, closest_node))
+        heappush(open_queue, (0, start_node))
 
         while len(open_queue) > 0:
             current_node_cost, current_node = heappop(open_queue)
+
             if current_node == goal_node:
                 break
 
             neighbors = current_node.neighbors
+
+            print '-------------------'
+            print current_node, neighbors
+            import pprint
+            pp = pprint.PrettyPrinter()
+            pp.pprint(path_map)
+
             for neighbor in neighbors:
-                if current_node in closed_set:
+                if neighbor in closed_set:
                     continue
+
+                if neighbor.x == -2:
+                    print closed_set
 
                 gx = distance_between(current_node, neighbor) + current_node_cost
                 hx = distance_between(neighbor, goal_node)
                 neighbor_cost = gx + hx
 
-                if neighbor in open_set:
+                if neighbor in open_queue:
+                    if neighbor.x == -2:
+                        print '1'
                     if gx < self.gx_map[neighbor]:
                         self.gx_map[neighbor] = gx
                         path_map[neighbor] = current_node
                 else:
+                    if neighbor.x == -2:
+                        print '2'
                     self.gx_map[neighbor] = gx
                     self.hx_map[neighbor] = hx
                     path_map[neighbor] = current_node
 
                 heappush(open_queue, (gx + hx, neighbor))
-                open_set.add(neighbor)
 
             closed_set.add(current_node)
 
         path_node = goal_node
         path = []
 
-        while path_node in path_map:
+        while path_node is not None:
             path.append(path_node)
-            path_node = path_map[path_node]
+            path_node = path_map.get(path_node)
 
         return path
         

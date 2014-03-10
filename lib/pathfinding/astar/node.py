@@ -23,3 +23,6 @@ class Node(object):
 
     def __repr__(self):
         return '<{} ({}, {})>'.format(hex(id(self)), self.x, self.y)
+
+    def __hash__(self):
+        return hash('{}_{}'.format(self.x, self.y))

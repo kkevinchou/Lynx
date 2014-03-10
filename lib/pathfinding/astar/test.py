@@ -86,7 +86,14 @@ def basic_path_test():
     astarplanner.add_polygon(poly1)
     # astarplanner.add_polygon(poly2)
 
-    print astarplanner.find_path(-1, -1, 1000, 1000)
+    print astarplanner.find_path(-2, -2, 1000, 1000)
+
+def test1():
+    poly1 = Polygon()
+    poly1.add_point(0, 0)
+    poly1.add_point(0, 1)
+    poly1.add_point(-1, 1)
+    poly1.add_point(-1, 0)
 
 if __name__ == '__main__':
     tests = [
