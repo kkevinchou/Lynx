@@ -89,20 +89,17 @@ def basic_path_test():
     print astarplanner.find_path(-2, -2, 1000, 1000)
 
 def test1():
-    poly1 = Polygon()
-    poly1.add_point(0, 0)
-    poly1.add_point(0, 1)
-    poly1.add_point(-1, 1)
-    poly1.add_point(-1, 0)
+    print line_intersect([Vec2d(-1, 1), Vec2d(-2, -2)], [Vec2d(0, 1), Vec2d(-1, 1)])
 
 if __name__ == '__main__':
     tests = [
-        basic_intersection_test,
-        line_intersection_test,
-        border_non_intersect_test,
+        # basic_intersection_test,
+        # line_intersection_test,
+        # border_non_intersect_test,
+        # shares_point_test,
+        # colinear_test,
         basic_path_test,
-        shares_point_test,
-        colinear_test,
+        # test1,
     ]
 
     for test in tests:

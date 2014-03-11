@@ -80,9 +80,9 @@ class AStarPlanner(object):
 
             print '-------------------'
             print current_node, neighbors
-            import pprint
-            pp = pprint.PrettyPrinter()
-            pp.pprint(path_map)
+            # import pprint
+            # pp = pprint.PrettyPrinter()
+            # pp.pprint(path_map)
 
             for neighbor in neighbors:
                 if neighbor in closed_set:
@@ -96,14 +96,14 @@ class AStarPlanner(object):
                 neighbor_cost = gx + hx
 
                 if neighbor in open_queue:
-                    if neighbor.x == -2:
-                        print '1'
+                    # if neighbor.x == -2:
+                    #     print '1'
                     if gx < self.gx_map[neighbor]:
                         self.gx_map[neighbor] = gx
                         path_map[neighbor] = current_node
                 else:
-                    if neighbor.x == -2:
-                        print '2'
+                    # if neighbor.x == -2:
+                    #     print '2'
                     self.gx_map[neighbor] = gx
                     self.hx_map[neighbor] = hx
                     path_map[neighbor] = current_node

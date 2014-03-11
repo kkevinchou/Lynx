@@ -3,6 +3,12 @@ from lib.vec2d import Vec2d
 def line_segment_equal(line_a, line_b):
     return (line_a[0] == line_b[0] and line_a[1] == line_b[1]) or (line_a[0] == line_b[1] and line_a[1] == line_b[0])
 
+def line_in_polygon(line, polygon):
+    for edge in polygon.get_edges():
+        if line_segment_equal(edge, line):
+            return True
+    return False
+
 def create_line_segment(node_a, node_b):
     return [node_a.point(), node_b.point()]
 
@@ -25,15 +31,20 @@ def intersect_polygon(line_segment, polygon):
     # is within the polygon.  Then, the shared/colinear check
     # should be moved to line_intersect rather than here.
 
-    for edge in polygon.get_edges():
-        if shares_point(line_segment, edge) and colinear(line_segment, edge):
-            return False
-
-    if shares_point(line_segment, edge):
+    if line_in_polygon(line_segment, polygon):
         return False
 
+    shared_points = 0
     for edge in polygon.get_edges():
-        if line_intersect(line_segment, edge):
+        if shares_point(line_segment, edge):
+            shared_points += 1
+
+    # Both points in the line is in the polygon yet they're not on the same line segment
+    if shared_points > 2:
+        return True
+
+    for edge in polygon.get_edges():
+        if line_intersect(line_segment, edge) and not shares_point(line_segment, edge):
             return True
 
     return False
