@@ -32,10 +32,8 @@ def line_intersection_test():
 
     line_a = [a, b]
     line_b = [b, c]
-    line_c = [c, d]
-    line_d = [d, a]
 
-    assert(line_intersect(line_a, line_b) == True)
+    assert(line_intersect(line_a, line_b) == False)
 
 def border_non_intersect_test():
     polygon = Polygon()
@@ -76,30 +74,29 @@ def basic_path_test():
     poly1.add_point(-1, 1)
     poly1.add_point(-1, 0)
 
-    # poly2 = Polygon()
-    # poly2.add_point(101, 0)
-    # poly2.add_point(101, 1)
-    # poly2.add_point(100, 1)
-    # poly2.add_point(100, 0)
-
     astarplanner = AStarPlanner()
     astarplanner.add_polygon(poly1)
-    # astarplanner.add_polygon(poly2)
 
-    print astarplanner.find_path(-2, -2, 1000, 1000)
+    path = astarplanner.find_path(-2, -2, 1000, 1000)
+    assert(len(path) == 3)
 
-def test1():
-    print line_intersect([Vec2d(-1, 1), Vec2d(-2, -2)], [Vec2d(0, 1), Vec2d(-1, 1)])
+    expected_path = [Node(1000, 1000), Node(0, 0), Node(-2, -2)]
+
+    for i in range(len(path)):
+        assert(path[i] == expected_path[i])
+
+def another_line_test():
+    assert(line_intersect([Vec2d(-1, 1), Vec2d(-2, -2)], [Vec2d(0, 1), Vec2d(-1, 1)]) == False)
 
 if __name__ == '__main__':
     tests = [
-        # basic_intersection_test,
-        # line_intersection_test,
-        # border_non_intersect_test,
-        # shares_point_test,
-        # colinear_test,
+        basic_intersection_test,
+        line_intersection_test,
+        border_non_intersect_test,
+        shares_point_test,
+        colinear_test,
         basic_path_test,
-        # test1,
+        another_line_test,
     ]
 
     for test in tests:

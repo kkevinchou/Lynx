@@ -40,11 +40,12 @@ def intersect_polygon(line_segment, polygon):
             shared_points += 1
 
     # Both points in the line is in the polygon yet they're not on the same line segment
+    # This is considered an intersection
     if shared_points > 2:
         return True
 
     for edge in polygon.get_edges():
-        if line_intersect(line_segment, edge) and not shares_point(line_segment, edge):
+        if line_intersect(line_segment, edge):
             return True
 
     return False
@@ -63,7 +64,7 @@ def colinear(line_a, line_b):
     return within_epsilon(abs(a_vec.dot(b_vec)), 1, 0.01)
 
 def line_intersect(line_a, line_b):
-    if colinear(line_a, line_b):
+    if colinear(line_a, line_b) or shares_point(line_a, line_b):
         return False
 
     line_a_t_value = _compute_t_value(line_a, line_b)
@@ -92,7 +93,7 @@ def _compute_t_value(intersector, intersectee):
     denominator = (A - B).dot(normal)
 
     # TODO: Technically, this has infinitely many intersection points.
-    # Do I need to handle this better
+    # Do I need to handle this better?
 
     if denominator == 0:
         return None

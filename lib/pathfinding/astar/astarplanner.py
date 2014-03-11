@@ -1,6 +1,6 @@
-from node import Node
+from lib.pathfinding.astar.node import Node
 from Queue import PriorityQueue
-from heapq import heappush, heappop
+from heapq import heappush, heappop, heapify
 from util import (
     distance_between,
     intersect_polygons,
@@ -11,9 +11,6 @@ class AStarPlanner(object):
     def __init__(self):
         self.polygons = []
         self.nodes = []
-
-        self.gx_map = {}
-        self.hx_map = {}
 
     def add_polygon(self, polygon):
         self.polygons.append(polygon)
@@ -64,57 +61,54 @@ class AStarPlanner(object):
         # closest_node = self.get_closest_node(start_node)
 
         closed_set = set()
-        open_queue = []
+        open_queue = [(0, start_node)]
 
-        # key: node, value: previous_node_in_path
         path_map = {}
-        heappush(open_queue, (0, start_node))
+        gx_map = { start_node: 0 }
 
         while len(open_queue) > 0:
             current_node_cost, current_node = heappop(open_queue)
-
             if current_node == goal_node:
                 break
 
             neighbors = current_node.neighbors
 
-            print '-------------------'
-            print current_node, neighbors
-            # import pprint
-            # pp = pprint.PrettyPrinter()
-            # pp.pprint(path_map)
-
             for neighbor in neighbors:
                 if neighbor in closed_set:
                     continue
 
-                if neighbor.x == -2:
-                    print closed_set
-
-                gx = distance_between(current_node, neighbor) + current_node_cost
+                gx = distance_between(neighbor, current_node) + gx_map[current_node]
                 hx = distance_between(neighbor, goal_node)
-                neighbor_cost = gx + hx
 
-                if neighbor in open_queue:
-                    # if neighbor.x == -2:
-                    #     print '1'
-                    if gx < self.gx_map[neighbor]:
-                        self.gx_map[neighbor] = gx
+                neighbor_in_open_queue = False
+
+                for cost, node in open_queue:
+                    if node == neighbor:
+                        neighbor_in_open_queue = True
+
+                if neighbor_in_open_queue:
+                    if gx < gx_map[neighbor]:
+                        open_queue.remove((gx_map[neighbor] + hx, neighbor))
+                        gx_map[neighbor] = gx
                         path_map[neighbor] = current_node
-                else:
-                    # if neighbor.x == -2:
-                    #     print '2'
-                    self.gx_map[neighbor] = gx
-                    self.hx_map[neighbor] = hx
-                    path_map[neighbor] = current_node
 
-                heappush(open_queue, (gx + hx, neighbor))
+                        # Update priority
+                        # Note, this runs in linear time, we could probably do something more efficient here
+
+                        heappush(open_queue, (gx + hx, neighbor))
+                        heapify(open_queue)
+                else:
+                    gx_map[neighbor] = gx
+                    path_map[neighbor] = current_node
+                    heappush(open_queue, (gx + hx, neighbor))
 
             closed_set.add(current_node)
 
-        path_node = goal_node
-        path = []
+        if current_node != goal_node:
+            return None
 
+        path = []
+        path_node = goal_node
         while path_node is not None:
             path.append(path_node)
             path_node = path_map.get(path_node)
