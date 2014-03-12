@@ -6,7 +6,6 @@ from lib.pathfinding.astar.node import Node
 from util import (
     intersect_polygon,
     line_intersect,
-    create_line_segment,
     shares_point,
     colinear,
 )
@@ -80,7 +79,7 @@ def basic_path_test():
     path = astarplanner.find_path(-2, -2, 1000, 1000)
     assert(len(path) == 3)
 
-    expected_path = [Node(1000, 1000), Node(0, 0), Node(-2, -2)]
+    expected_path = [Node(-2, -2), Node(0, 0), Node(1000, 1000)]
 
     for i in range(len(path)):
         assert(path[i] == expected_path[i])

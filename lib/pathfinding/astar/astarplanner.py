@@ -1,23 +1,25 @@
 from lib.pathfinding.astar.node import Node
+from lib.vec2d import Vec2d
+from collections import defaultdict
 from Queue import PriorityQueue
 from heapq import heappush, heappop, heapify
 from util import (
     distance_between,
     intersect_polygons,
-    create_line_segment,
 )
 
 class AStarPlanner(object):
     def __init__(self):
         self.polygons = []
         self.nodes = []
+        self.neighbors = defaultdict(list)
 
     def add_polygon(self, polygon):
         self.polygons.append(polygon)
         
         polygon_points = polygon.get_points()
         for point in polygon_points:
-            self.nodes.append(Node(point))
+            self.nodes.append(Node(point.x, point.y))
 
     def compute_neighbours(self):
         for node_a in self.nodes:
@@ -25,8 +27,11 @@ class AStarPlanner(object):
                 if node_a == node_b:
                     continue
 
-                if not intersect_polygons(create_line_segment(node_a, node_b), self.polygons):
-                    node_a.neighbors.append(node_b)
+                point_a = Vec2d(node_a.x, node_a.y)
+                point_b = Vec2d(node_b.x, node_b.y)
+
+                if not intersect_polygons([point_a, point_b], self.polygons):
+                    self.neighbors[node_a].append(node_b)
 
     def get_closest_node(self, node):
         min_dist = distance_between(node, self.nodes[0])
@@ -71,7 +76,7 @@ class AStarPlanner(object):
             if current_node == goal_node:
                 break
 
-            neighbors = current_node.neighbors
+            neighbors = self.neighbors[current_node]
 
             for neighbor in neighbors:
                 if neighbor in closed_set:
@@ -113,6 +118,7 @@ class AStarPlanner(object):
             path.append(path_node)
             path_node = path_map.get(path_node)
 
+        path.reverse()
         return path
         
 

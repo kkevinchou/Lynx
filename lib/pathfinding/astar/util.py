@@ -9,12 +9,9 @@ def line_in_polygon(line, polygon):
             return True
     return False
 
-def create_line_segment(node_a, node_b):
-    return [node_a.point(), node_b.point()]
-
 def distance_between(node_a, node_b):
-    point_a = node_a.point()
-    point_b = node_b.point()
+    point_a = Vec2d(node_a.x, node_a.y)
+    point_b = Vec2d(node_b.x, node_b.y)
 
     return (point_a - point_b).get_length()
 
