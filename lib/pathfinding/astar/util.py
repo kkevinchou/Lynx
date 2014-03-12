@@ -22,12 +22,6 @@ def intersect_polygons(line_segment, polygons):
     return False
 
 def intersect_polygon(line_segment, polygon):
-    # TODO: handle the case of sharing a point but colinear
-    # with some other edge.  This case should be handled better.
-    # E.g. do a explicit check of whether the non shared point
-    # is within the polygon.  Then, the shared/colinear check
-    # should be moved to line_intersect rather than here.
-
     if line_in_polygon(line_segment, polygon):
         return False
 
