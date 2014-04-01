@@ -7,8 +7,8 @@ class Test(unittest.TestCase):
 		pass
 
 	def test_convex_hull(self):
-		points = [Vec2d(-0.5, 0.5), Vec2d(0, 0), Vec2d(0, 1), Vec2d(-1, 1), Vec2d(-1, 0)]
-		self.assertEqual(generate_convex_hull(points), [])
+		points = [Vec2d(-1, 0), Vec2d(0, 1), Vec2d(-0.5, 0.5),Vec2d(0, 0), Vec2d(-1, 1)]
+		self.assertEqual(generate_convex_hull(points), [Vec2d(0, 0), Vec2d(0, 1), Vec2d(-1, 1), Vec2d(-1, 0)])
 
 if __name__ == '__main__':
 	unittest.main()
