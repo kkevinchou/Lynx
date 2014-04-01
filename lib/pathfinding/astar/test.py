@@ -1,7 +1,6 @@
 from astarplanner import AStarPlanner
 from polygon import Polygon
 from lib.vec2d import Vec2d
-from lib.geometry.point import Point
 
 from util import (
     intersect_polygon,
@@ -79,7 +78,7 @@ def basic_path_test():
     path = astarplanner.find_path(-2, -2, 1000, 1000)
     assert(len(path) == 3)
 
-    expected_path = [Point(-2, -2), Point(0, 0), Point(1000, 1000)]
+    expected_path = [Vec2d(-2, -2), Vec2d(0, 0), Vec2d(1000, 1000)]
 
     for i in range(len(path)):
         assert(path[i] == expected_path[i])

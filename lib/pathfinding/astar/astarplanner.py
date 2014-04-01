@@ -1,4 +1,3 @@
-from lib.geometry.point import Point
 from lib.vec2d import Vec2d
 from collections import defaultdict
 from Queue import PriorityQueue
@@ -16,10 +15,7 @@ class AStarPlanner(object):
 
     def add_polygon(self, polygon):
         self.polygons.append(polygon)
-        
-        polygon_points = polygon.get_points()
-        for point in polygon_points:
-            self.nodes.append(Point(point.x, point.y))
+        self.nodes.extend(polygon.get_points())
 
     def compute_neighbours(self):
         for node_a in self.nodes:
@@ -27,10 +23,7 @@ class AStarPlanner(object):
                 if node_a == node_b:
                     continue
 
-                point_a = Vec2d(node_a.x, node_a.y)
-                point_b = Vec2d(node_b.x, node_b.y)
-
-                if not intersect_polygons([point_a, point_b], self.polygons):
+                if not intersect_polygons([node_a, node_b], self.polygons):
                     self.neighbors[node_a].append(node_b)
 
     def get_closest_node(self, node):
@@ -52,8 +45,8 @@ class AStarPlanner(object):
         self.nodes.append(node)
 
     def find_path(self, x1, y1, x2, y2):
-        start_node = Point(x1, y1)
-        goal_node = Point(x2, y2)
+        start_node = Vec2d(x1, y1)
+        goal_node = Vec2d(x2, y2)
 
         self.add_node(start_node)
         self.add_node(goal_node)
