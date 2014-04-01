@@ -1,4 +1,4 @@
-from lib.pathfinding.astar.node import Node
+from lib.geometry.point import Point
 from lib.vec2d import Vec2d
 from collections import defaultdict
 from Queue import PriorityQueue
@@ -19,7 +19,7 @@ class AStarPlanner(object):
         
         polygon_points = polygon.get_points()
         for point in polygon_points:
-            self.nodes.append(Node(point.x, point.y))
+            self.nodes.append(Point(point.x, point.y))
 
     def compute_neighbours(self):
         for node_a in self.nodes:
@@ -52,8 +52,8 @@ class AStarPlanner(object):
         self.nodes.append(node)
 
     def find_path(self, x1, y1, x2, y2):
-        start_node = Node(x1, y1)
-        goal_node = Node(x2, y2)
+        start_node = Point(x1, y1)
+        goal_node = Point(x2, y2)
 
         self.add_node(start_node)
         self.add_node(goal_node)

@@ -1,8 +1,12 @@
-from rect import Rect
+import unittest
+from lib.geometry.util import generate_convex_hull
 
-a_points = [(0, 0), (-1, 0), (-1, -1), (0, -1)]
-b_points = [(0, 0), (-1, 0), (-1, -1), (0, -1)]
+class Test(unittest.TestCase):
+	def setUp(self):
+		pass
 
-a_rect = Rect(0, 0, a_points)
-b_rect = Rect(1, 0ls
-    , b_points)
+	def test_convex_hull(self):
+		self.assertEqual(generate_convex_hull([]), [])
+
+if __name__ == '__main__':
+	unittest.main()
