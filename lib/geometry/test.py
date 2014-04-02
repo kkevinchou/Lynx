@@ -18,10 +18,52 @@ class Test(unittest.TestCase):
         x_max = 100
         y_max = 100
 
-        num_points = 1000
+        points = []
+        num_points = 20
         for i in range(num_points):
-            x = random.randint(x_offset, x_offset + x_max)
-            y = random.randint(y_offset, y_offset + y_max)
+            x = random.randint(0, x_max) + x_offset
+            y = -1 * random.randint(0, y_max) + -1 * y_offset
+            points.append(Vec2d(x, y))
+
+        hull_points = generate_convex_hull(points)
+        print hull_points
+
+        import sys, pygame
+        pygame.init()
+
+        size = width, height = 320, 240
+        black = (0, 0, 0)
+        white = (255, 255, 255)
+        green = (0, 255, 0)
+        red = (255, 0, 0)
+
+        screen = pygame.display.set_mode(size, 0, 32)
+        clock = pygame.time.Clock()
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT: sys.exit()
+
+            screen.fill(white)
+            for point in points:
+                draw_color = black
+                if point in hull_points:
+                    draw_color = red
+
+                pygame.draw.circle(screen, draw_color, (point.x, -point.y), 2, 2)
+
+            pygame.draw.circle(screen, green, (hull_points[0].x, -hull_points[0].y), 2, 2)
+            num_hull_points = len(hull_points)
+            for i in range(num_hull_points):
+                point_a = (hull_points[(i + 1) % num_hull_points].x, -hull_points[(i + 1) % num_hull_points].y)
+                point_b = (hull_points[i].x, -hull_points[i].y)
+
+                pygame.draw.line(screen, red, point_a, point_b)
+                break
+
+            pygame.display.flip()
+            pygame.display.update()
+            clock.tick(30)
 
 if __name__ == '__main__':
     unittest.main()

@@ -25,6 +25,8 @@ def generate_convex_hull(points):
             continue
 
         angle = Vec2d(pivot_point.x + 1, pivot_point.y).get_angle_between(point - pivot_point)
+        if angle < 0:
+            angle += 360
         point_to_angle_map[point] = angle
 
     sorted_points = sorted(point_to_angle_map, key=point_to_angle_map.get)
