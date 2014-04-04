@@ -31,25 +31,38 @@ def generate_convex_hull(points):
 
     sorted_points = sorted(point_to_angle_map, key=point_to_angle_map.get)
 
-    hull_points = [pivot_point, sorted_points[0]]
+    hull_points = [pivot_point, sorted_points[0], sorted_points[1]]
 
-    for point in sorted_points[1:]:
-        hull_point1 , hull_point2 = hull_points[-2:]
-        vec2 = point - hull_point2
-        vec1 = hull_point2 - hull_point1
+    for point in sorted_points[2:]:
+        print hull_points
 
-        if vec2.cross(vec1) > 0:
-            hull_points.pop()
-            hull_points.append(point)
-        elif vec2.cross(vec1) < 0:
-            hull_points.append(point)
-        else:
-            point_dist = (point - hull_point1).get_length()
-            hull_dist = (hull_point2 - hull_point1).get_length()
+        next_hull_point_found = False
+        while not next_hull_point_found:
+            previous, current, next = hull_points[-3:]
 
-            # Keep the point that's further away for our convex hull
-            if point_dist > hull_dist:
+            print previous, current, next
+            raw_input()
+
+            vec2 = next - current
+            vec1 = current - previous
+
+            if vec2.cross(vec1) > 0:
+                print 'right'
                 hull_points.pop()
                 hull_points.append(point)
+            elif vec2.cross(vec1) < 0:
+                print 'left'
+                hull_points.append(point)
+                next_hull_point_found = True
+            else:
+                # print 'equal'
+                # point_dist = (next - previous).get_length()
+                # hull_dist = (current - previous).get_length()
+
+                # # Keep the point that's further away for our convex hull
+                # if point_dist > hull_dist:
+                #     hull_points.pop()
+                #     hull_points.append(point)
+                next_hull_point_found = True
 
     return hull_points
