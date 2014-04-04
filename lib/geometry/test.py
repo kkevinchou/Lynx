@@ -25,6 +25,7 @@ class Test(unittest.TestCase):
             y = -1 * random.randint(0, y_max) + -1 * y_offset
             points.append(Vec2d(x, y))
 
+        points = [Vec2d(105, -150), Vec2d(113, -134), Vec2d(84, -111), Vec2d(143, -137), Vec2d(136, -97), Vec2d(138, -60)]
         hull_points = generate_convex_hull(points)
         print hull_points
 
@@ -59,7 +60,6 @@ class Test(unittest.TestCase):
                 point_b = (hull_points[i].x, -hull_points[i].y)
 
                 pygame.draw.line(screen, red, point_a, point_b)
-                break
 
             pygame.display.flip()
             pygame.display.update()
