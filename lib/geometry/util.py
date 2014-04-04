@@ -1,4 +1,7 @@
 from lib.vec2d import Vec2d
+import pygame
+
+red = (255, 0, 0)
 
 def get_bottom_right_most_point(points):
     lowest_point = points[0]
@@ -12,10 +15,12 @@ def get_bottom_right_most_point(points):
 
     return lowest_point
 
-def generate_convex_hull(points):
+def generate_convex_hull(points, screen=None):
     # Note, this algorithm requires that we select the bottom most point.
     # Otherwise, we could potentially get negative angles from `get_angle_between()`
     # which throws off the angle sorting
+
+    lines_to_draw = []
     
     pivot_point = get_bottom_right_most_point(points)
 
@@ -34,35 +39,39 @@ def generate_convex_hull(points):
     hull_points = [pivot_point, sorted_points[0], sorted_points[1]]
 
     for point in sorted_points[2:]:
-        print hull_points
-
         next_hull_point_found = False
+
         while not next_hull_point_found:
             previous, current, next = hull_points[-3:]
-
-            print previous, current, next
-            raw_input()
-
             vec2 = next - current
             vec1 = current - previous
 
-            if vec2.cross(vec1) > 0:
-                print 'right'
-                hull_points.pop()
-                hull_points.append(point)
-            elif vec2.cross(vec1) < 0:
+            if screen is not None:
+                pygame.draw.line(screen, red, (previous.x, -previous.y), (current.x, -current.y))
+                pygame.draw.line(screen, red, (current.x, -current.y), (next.x, -next.y))
+                pygame.display.flip()
+                pygame.display.update()
+                raw_input()
+
+            if vec2.cross(vec1) < 0:
                 print 'left'
                 hull_points.append(point)
                 next_hull_point_found = True
+            elif vec2.cross(vec1) > 0:
+                print 'right'
+                hull_points.pop(-2)
             else:
-                # print 'equal'
-                # point_dist = (next - previous).get_length()
-                # hull_dist = (current - previous).get_length()
+                print 'equal'
+                next_dist = (next - previous).get_length()
+                current_dist = (current - previous).get_length()
 
-                # # Keep the point that's further away for our convex hull
-                # if point_dist > hull_dist:
-                #     hull_points.pop()
-                #     hull_points.append(point)
+                # Keep the point that's further away for our convex hull
+                if next_dist > current_dist:
+                    hull_points.pop(-2)
+                else:
+                    hull_points.pop()
+                
+                hull_points.append(point)
                 next_hull_point_found = True
 
     return hull_points
