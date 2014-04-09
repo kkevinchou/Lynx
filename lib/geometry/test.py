@@ -8,11 +8,21 @@ class Test(unittest.TestCase):
     def setUp(self):
         pass
 
+    def test_broken_hull_history1(self):
+        points = [Vec2d(60, -130), Vec2d(65, -83), Vec2d(105, -74), Vec2d(141, -136), Vec2d(79, -123)]
+        hull_points = generate_convex_hull(points)
+        self.assertEqual(hull_points, [Vec2d(141, -136), Vec2d(105, -74), Vec2d(65, -83), Vec2d(60, -130), Vec2d(141, -136)])
+
+    def test_broken_hull_history2(self):
+        points = [Vec2d(105, -150), Vec2d(113, -134), Vec2d(84, -111), Vec2d(143, -137), Vec2d(136, -97), Vec2d(138, -60)]
+        hull_points = generate_convex_hull(points)
+        self.assertEqual(hull_points, [Vec2d(105, -150), Vec2d(143, -137), Vec2d(138, -60), Vec2d(84, -111), Vec2d(105, -150)])
+
     # def test_convex_hull(self):
     #     points = [Vec2d(-1, 0), Vec2d(0, 1), Vec2d(-0.5, 0.5),Vec2d(0, 0), Vec2d(-1, 1)]
     #     self.assertEqual(generate_convex_hull(points), [Vec2d(0, 0), Vec2d(0, 1), Vec2d(-1, 1), Vec2d(-1, 0)])
 
-    def test_random_hull(self):
+    def test_zvisual(self):
         pygame.init()
         size = width, height = 320, 240
         screen = pygame.display.set_mode(size, 0, 32)
@@ -36,9 +46,6 @@ class Test(unittest.TestCase):
             x = random.randint(0, x_max) + x_offset
             y = -1 * random.randint(0, y_max) + -1 * y_offset
             points.append(Vec2d(x, y))
-
-        # points = [Vec2d(105, -150), Vec2d(113, -134), Vec2d(84, -111), Vec2d(143, -137), Vec2d(136, -97), Vec2d(138, -60)]
-        points = [Vec2d(55, -105), Vec2d(95, -122), Vec2d(60, -130), Vec2d(64, -91), Vec2d(111, -99), Vec2d(119, -132), Vec2d(65, -83), Vec2d(105, -74), Vec2d(141, -136), Vec2d(79, -123)]
 
         screen.fill(white)
 

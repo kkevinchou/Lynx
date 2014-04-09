@@ -1,1 +1,2 @@
-python lib/pathfinding/astar/test.py
+# python lib/pathfinding/astar/test.py
+python lib/geometry/test.py

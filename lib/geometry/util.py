@@ -35,33 +35,30 @@ def generate_convex_hull(points, screen=None):
         point_to_angle_map[point] = angle
 
     sorted_points = sorted(point_to_angle_map, key=point_to_angle_map.get)
+    sorted_points.append(pivot_point)
 
     hull_points = [pivot_point, sorted_points[0], sorted_points[1]]
 
     for point in sorted_points[2:]:
         next_hull_point_found = False
-
         while not next_hull_point_found:
             previous, current, next = hull_points[-3:]
             vec2 = next - current
             vec1 = current - previous
 
-            if screen is not None:
-                pygame.draw.line(screen, red, (previous.x, -previous.y), (current.x, -current.y))
-                pygame.draw.line(screen, red, (current.x, -current.y), (next.x, -next.y))
-                pygame.display.flip()
-                pygame.display.update()
-                raw_input()
+            # if screen is not None:
+            #     pygame.draw.line(screen, red, (previous.x, -previous.y), (current.x, -current.y))
+            #     pygame.draw.line(screen, red, (current.x, -current.y), (next.x, -next.y))
+            #     pygame.display.flip()
+            #     pygame.display.update()
+            #     raw_input()
 
             if vec2.cross(vec1) < 0:
-                print 'left'
                 hull_points.append(point)
                 next_hull_point_found = True
             elif vec2.cross(vec1) > 0:
-                print 'right'
                 hull_points.pop(-2)
             else:
-                print 'equal'
                 next_dist = (next - previous).get_length()
                 current_dist = (current - previous).get_length()
 
