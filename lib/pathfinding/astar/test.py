@@ -1,121 +1,72 @@
-from astarplanner import AStarPlanner
-from polygon import Polygon
+import unittest
 from lib.vec2d import Vec2d
+import sys, pygame
+from lib.pathfinding.astar.polygon import Polygon
 
-from util import (
-    intersect_polygon,
-    line_intersect,
-    shares_point,
-    colinear,
-)
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
 
-def basic_intersection_test():
-    poly = Polygon()
-    poly.add_point(0, 0)
-    poly.add_point(0, 1)
-    poly.add_point(-1, 1)
-    poly.add_point(-1, 0)
+    def test_zvisual(self):
+        pygame.init()
+        size = width, height = 320, 240
+        screen = pygame.display.set_mode(size, 0, 32)
+        clock = pygame.time.Clock()
 
-    line = [Vec2d(0.5, -0.5), Vec2d(-0.5, 0.5)]
-    assert(intersect_polygon(line, poly) == True)
+        black = (0, 0, 0)
+        white = (255, 255, 255)
+        green = (0, 255, 0)
+        red = (255, 0, 0)
+        bleh = (155, 10, 110)
 
-    line = [Vec2d(1, -1), Vec2d(1, 0)]
-    assert(intersect_polygon(line, poly) == False)
+        poly = Polygon()
+        poly.add_point(50, 0)
+        poly.add_point(50, 50)
+        poly.add_point(0, 50)
+        poly.add_point(0, 0)
 
-def line_intersection_test():
-    a = Vec2d(1, 0)
-    b = Vec2d(1, 1)
-    c = Vec2d(0, 1)
-    d = Vec2d(0, 0)
+        poly2 = Polygon()
+        poly2.add_point(50, 0)
+        poly2.add_point(50, 50)
+        poly2.add_point(0, 50)
+        poly2.add_point(0, 0)
 
-    line_a = [a, b]
-    line_b = [b, c]
+        c_poly = poly.compute_c_polygon(poly2)
+        print c_poly
 
-    assert(line_intersect(line_a, line_b) == False)
+        screen.fill(white)
 
-def border_non_intersect_test():
-    polygon = Polygon()
-    polygon.add_point(0, 0)
-    polygon.add_point(0, 1)
-    polygon.add_point(-1, 1)
-    polygon.add_point(-1, 0)
+        for point in poly.get_points():
+            print point
+            draw_color = black
+            pygame.draw.circle(screen, draw_color, (point.x + 200, height - point.y - 100), 3, 3)
+            print (point.x + 200, height - point.y - 200)
 
-    line1 = [Vec2d(0, 0), Vec2d(-1, 0)]
-    line2 = [Vec2d(0, 1), Vec2d(0, 0)]
+        for point in c_poly.get_points():
+            print point
+            draw_color = green
+            pygame.draw.circle(screen, draw_color, (point.x + 200, height - point.y - 100), 3, 3)
+            print (point.x + 200, 200 + height - point.y)
 
-    assert(intersect_polygon(line1, polygon) == False)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT: sys.exit()
 
-def shares_point_test():
-    a = Vec2d(1, 0)
-    b = Vec2d(1, 1)
-    c = Vec2d(0, 1)
-    d = Vec2d(0, 0)
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_ESCAPE]:
+                sys.exit()
 
-    line_a = [a, b]
-    line_b = [b, c]
-    line_c = [c, d]
+            # num_hull_points = len(hull_points)
+            # for i in range(num_hull_points):
+            #     point_a = (hull_points[(i + 1) % num_hull_points].x, -hull_points[(i + 1) % num_hull_points].y)
+            #     point_b = (hull_points[i].x, -hull_points[i].y)
 
-    assert(shares_point(line_a, line_b) == True)
-    assert(shares_point(line_a, line_c) == False)
+            #     pygame.draw.line(screen, red, point_a, point_b)
+            #     pygame.display.flip()
 
-def colinear_test():
-    base = Vec2d(0, 0)
-    assert(colinear([base, Vec2d(1, 0)], [base, Vec2d(0, 1)]) == False)
-    assert(colinear([base, Vec2d(1, 0)], [base, Vec2d(0, -1)]) == False)
-    assert(colinear([base, Vec2d(1, 0)], [base, Vec2d(-1, 0)]) == True)
-    assert(colinear([base, Vec2d(1, 0)], [base, Vec2d(1, 0)]) == True)
-
-def basic_path_test():
-    poly1 = Polygon()
-    poly1.add_point(0, 0)
-    poly1.add_point(0, 1)
-    poly1.add_point(-1, 1)
-    poly1.add_point(-1, 0)
-
-    astarplanner = AStarPlanner()
-    astarplanner.add_polygon(poly1)
-
-    path = astarplanner.find_path(-2, -2, 1000, 1000)
-    assert(len(path) == 3)
-
-    expected_path = [Vec2d(-2, -2), Vec2d(0, 0), Vec2d(1000, 1000)]
-
-    for i in range(len(path)):
-        assert(path[i] == expected_path[i])
-
-def another_line_test():
-    assert(line_intersect([Vec2d(-1, 1), Vec2d(-2, -2)], [Vec2d(0, 1), Vec2d(-1, 1)]) == False)
+            pygame.display.flip()
+            pygame.display.update()
+            clock.tick(30)
 
 if __name__ == '__main__':
-    tests = [
-        basic_intersection_test,
-        line_intersection_test,
-        border_non_intersect_test,
-        shares_point_test,
-        colinear_test,
-        basic_path_test,
-        another_line_test,
-    ]
-
-    for test in tests:
-        test()
-
-# poly2 = Polygon()
-# poly2.add_point(100, 0)
-# poly2.add_point(100, 1)
-# poly2.add_point(101, 1)
-# poly2.add_point(101, 0)
-
-# planner.add_polygon(poly1)
-# planner.add_polygon(poly2)
-
-# planner.find_path(0, 0, 1, 1)
-
-# b = [numpy.array([0, 0]), numpy.array([1, 1])]
-
-# c = numpy.array([0, 1])
-# d = numpy.array([1, 0])
-
-# print numpy.array_equal(c, d)
-# b = [numpy.array([0, 0]), numpy.array([1, 1])]
-# print _compute_t_value(a, b)
+    unittest.main()
