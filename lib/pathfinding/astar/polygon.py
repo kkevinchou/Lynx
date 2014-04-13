@@ -8,14 +8,25 @@ class Polygon(object):
 
         self.points = points
 
+        if len(self.points) != len(set(self.points)):
+            raise Exception('Points in Polygon must be distinct')
+
     def get_points(self):
         return self.points
 
     def add_point(self, x, y):
-        self.points.append(Vec2d(x, y))
+        new_point = Vec2d(x, y)
+
+        if new_point in self.points:
+            raise Exception('Points in Polygon must be distinct')
+
+        self.points.append(new_point)
 
     def add_points(self, points):
         self.points.extend(points)
+
+        if len(self.points) != len(set(self.points)):
+            raise Exception('Points in Polygon must be distinct')
 
     def get_edges(self):
         num_points = len(self.points)
