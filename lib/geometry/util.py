@@ -20,6 +20,9 @@ def generate_convex_hull(points, screen=None):
     # Otherwise, we could potentially get negative angles from `get_angle_between()`
     # which throws off the angle sorting
 
+    if len(points) < 3:
+        raise Exception('Cannot generate convex hull for fewer than three points')
+
     lines_to_draw = []
     
     pivot_point = get_bottom_right_most_point(points)
@@ -70,5 +73,8 @@ def generate_convex_hull(points, screen=None):
                 
                 hull_points.append(point)
                 next_hull_point_found = True
+
+    # The last point equals the first one, pop it off
+    hull_points.pop()
 
     return hull_points

@@ -44,6 +44,11 @@ class AStarPlanner(object):
     def add_node(self, node):
         self.nodes.append(node)
 
+    def draw_neighbors(self, renderer, color=(0, 0, 0)):
+        for node, neighbors in self.neighbors.iteritems():
+            for neighbor in neighbors:
+                renderer.draw_lines([node, neighbor], color)
+
     def find_path(self, x1, y1, x2, y2):
         start_node = Vec2d(x1, y1)
         goal_node = Vec2d(x2, y2)

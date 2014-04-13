@@ -31,3 +31,4 @@ class Polygon(object):
 
         c_polygon_points = generate_convex_hull(all_points)
         return Polygon(c_polygon_points)
+
