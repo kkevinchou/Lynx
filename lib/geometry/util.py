@@ -7,7 +7,7 @@ def get_bottom_right_most_point(points):
     lowest_point = points[0]
 
     for point in points:
-        if point.y < lowest_point.y:
+        if point.y > lowest_point.y:
             lowest_point = point
         elif point.y == lowest_point.y:
             if point.x > lowest_point.x:
@@ -26,7 +26,6 @@ def generate_convex_hull(points, screen=None):
     lines_to_draw = []
     
     pivot_point = get_bottom_right_most_point(points)
-
     point_to_angle_map = {}
     for point in points:
         if point == pivot_point:
@@ -35,9 +34,10 @@ def generate_convex_hull(points, screen=None):
         angle = Vec2d(pivot_point.x + 1, pivot_point.y).get_angle_between(point - pivot_point)
         if angle < 0:
             angle += 360
+
         point_to_angle_map[point] = angle
 
-    sorted_points = sorted(point_to_angle_map, key=point_to_angle_map.get)
+    sorted_points = sorted(point_to_angle_map, key=point_to_angle_map.get, reverse=True)
     sorted_points.append(pivot_point)
 
     hull_points = [pivot_point, sorted_points[0], sorted_points[1]]
@@ -49,17 +49,10 @@ def generate_convex_hull(points, screen=None):
             vec2 = next - current
             vec1 = current - previous
 
-            # if screen is not None:
-            #     pygame.draw.line(screen, red, (previous.x, -previous.y), (current.x, -current.y))
-            #     pygame.draw.line(screen, red, (current.x, -current.y), (next.x, -next.y))
-            #     pygame.display.flip()
-            #     pygame.display.update()
-            #     raw_input()
-
-            if vec2.cross(vec1) < 0:
+            if vec2.cross(vec1) > 0:
                 hull_points.append(point)
                 next_hull_point_found = True
-            elif vec2.cross(vec1) > 0:
+            elif vec2.cross(vec1) < 0:
                 hull_points.pop(-2)
             else:
                 next_dist = (next - previous).get_length()

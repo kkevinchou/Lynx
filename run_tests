@@ -1,2 +1,2 @@
-# python lib/pathfinding/astar/test.py
-python lib/geometry/test.py
+python2.7-32 lib/pathfinding/astar/test.py
+# python lib/geometry/test.py
