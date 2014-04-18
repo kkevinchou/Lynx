@@ -1,7 +1,24 @@
-from lib.vec2d import Vec2d
+import random
 import pygame
+from lib.vec2d import Vec2d
 
-red = (255, 0, 0)
+def generate_random_polygon(x_min, y_min, x_max, y_max, num_points):
+    from lib.pathfinding.astar.polygon import Polygon
+    points = []
+
+    i = 0
+    while i < num_points:
+        x = random.randint(x_min, x_max)
+        y = random.randint(y_min, y_max)
+
+        if Vec2d(x, y) in points:
+            continue
+        else:
+            points.append(Vec2d(x, y))
+            i += 1
+
+    hull_points = generate_convex_hull(points)
+    return Polygon(hull_points)
 
 def get_bottom_right_most_point(points):
     lowest_point = points[0]
