@@ -38,6 +38,26 @@ class AStarPlanner(object):
 
         return min_node
 
+    def cleanup(self, start_node, goal_node):
+        for node, neighbors in self.neighbors.iteritems():
+            try:
+                neighbors.remove(start_node)
+            except ValueError:
+                pass
+            try:
+                neighbors.remove(goal_node)
+            except ValueError:
+                pass
+
+        try:
+            self.nodes.remove(start_node)
+        except ValueError:
+                pass
+        try:
+            self.nodes.remove(goal_node)
+        except ValueError:
+                pass
+
     def remove_node(self, node):
         self.nodes.remove(node)
 
@@ -56,12 +76,6 @@ class AStarPlanner(object):
         self.add_node(start_node)
         self.add_node(goal_node)
         self.compute_neighbours()
-
-        # check for direct los from start_node to goal_node
-        # if not intersect_polygons([start_node, goal_node], self.polygons):
-        #     return [start_node, goal_node]
-
-        # closest_node = self.get_closest_node(start_node)
 
         closed_set = set()
         open_queue = [(0, start_node)]
@@ -117,6 +131,8 @@ class AStarPlanner(object):
             path_node = path_map.get(path_node)
 
         path.reverse()
+
+        self.cleanup(start_node, goal_node)
         return path
         
 
