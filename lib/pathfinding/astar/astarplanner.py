@@ -17,6 +17,13 @@ class AStarPlanner(object):
         self.polygons.append(polygon)
         self.nodes.extend(polygon.get_points())
 
+    def add_polygons(self, polygons):
+        for polygon in polygons:
+            self.add_polygon(polygon)
+
+    def init(self):
+        self.compute_neighbours()
+
     def compute_neighbours(self):
         for node_a in self.nodes:
             for node_b in self.nodes:
@@ -38,7 +45,19 @@ class AStarPlanner(object):
 
         return min_node
 
-    def cleanup(self, start_node, goal_node):
+    def init_start_goal(self, start_node, goal_node):
+        start_goal_nodes = [start_node, goal_node]
+
+        for node_a in start_goal_nodes:
+            for node_b in self.nodes:
+                if node_a == node_b:
+                    continue
+
+                if not intersect_polygons([node_a, node_b], self.polygons):
+                    self.neighbors[node_a].append(node_b)
+                    self.neighbors[node_b].append(node_a)
+
+    def cleanup_start_goal(self, start_node, goal_node):
         for node, neighbors in self.neighbors.iteritems():
             try:
                 neighbors.remove(start_node)
@@ -49,14 +68,8 @@ class AStarPlanner(object):
             except ValueError:
                 pass
 
-        try:
-            self.nodes.remove(start_node)
-        except ValueError:
-                pass
-        try:
-            self.nodes.remove(goal_node)
-        except ValueError:
-                pass
+        self.neighbors.pop(start_node)
+        self.neighbors.pop(goal_node)
 
     def remove_node(self, node):
         self.nodes.remove(node)
@@ -73,9 +86,10 @@ class AStarPlanner(object):
         start_node = Vec2d(x1, y1)
         goal_node = Vec2d(x2, y2)
 
-        self.add_node(start_node)
-        self.add_node(goal_node)
-        self.compute_neighbours()
+        if not intersect_polygons([start_node, goal_node], self.polygons):
+            return [goal_node]
+
+        self.init_start_goal(start_node, goal_node)
 
         closed_set = set()
         open_queue = [(0, start_node)]
@@ -132,7 +146,7 @@ class AStarPlanner(object):
 
         path.reverse()
 
-        self.cleanup(start_node, goal_node)
+        self.cleanup_start_goal(start_node, goal_node)
         return path
         
 

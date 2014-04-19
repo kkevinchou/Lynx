@@ -27,7 +27,7 @@ class Test(unittest.TestCase):
         points = [Vec2d(1, 0), Vec2d(0, 0), Vec2d(0.5, 0.5),Vec2d(0, 1), Vec2d(1, 1)]
         self.assertEqual(generate_convex_hull(points), [Vec2d(1, 1), Vec2d(1, 0), Vec2d(0, 0), Vec2d(0, 1)])
 
-    def test_zvisual(self):
+    def ztest_visual(self):
         pygame.init()
         size = width, height = 320, 240
         screen = pygame.display.set_mode(size, 0, 32)

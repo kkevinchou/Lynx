@@ -19,8 +19,8 @@ obstacle6 = generate_random_polygon(500, 401, 600, 600, 10)
 obstacles = [obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6]
 
 planner = AStarPlanner()
-for obstacle in obstacles:
-    planner.add_polygon(obstacle)
+planner.add_polygons(obstacles)
+planner.init()
 
 renderer = Renderer(800, 600)
 path = planner.find_path(0, 0, 800, 600)
@@ -62,6 +62,8 @@ while True:
             direction = target_node - position
             direction = direction.normalized()
             position = position + (direction * speed)
+    else:
+        break
 
     renderer.draw_circle(Vec2d(int(position.x), int(position.y)))
     renderer.flip()

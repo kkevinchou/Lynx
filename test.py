@@ -23,8 +23,8 @@ class Test(unittest.TestCase):
         # obstacles = [obstacle6]
 
         planner = AStarPlanner()
-        for obstacle in obstacles:
-            planner.add_polygon(obstacle)
+        planner.add_polygons(obstacles)
+        planner.init()
 
         path = planner.find_path(0, 0, 800, 600)
 

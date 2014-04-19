@@ -7,7 +7,7 @@ class Test(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_zvisual(self):
+    def test_visual(self):
         pygame.init()
         size = width, height = 320, 240
         screen = pygame.display.set_mode(size, 0, 32)
