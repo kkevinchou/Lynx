@@ -43,7 +43,7 @@ def intersect_polygon(line_segment, polygon):
         return True
 
     for edge in polygon.get_edges():
-        if line_intersect(line_segment, edge):
+        if line_intersect(line_segment, edge, True):
             return True
 
     return False
@@ -61,13 +61,14 @@ def colinear(line_a, line_b):
 
     return within_epsilon(abs(a_vec.dot(b_vec)), 1, 0.01)
 
-def line_intersect(line_a, line_b):
-    if colinear(line_a, line_b) or shares_point(line_a, line_b):
+def line_intersect(line_a, line_b, ignore_overlapping=False):
+    if shares_point(line_a, line_b):
         return False
 
     line_a_t_value = _compute_t_value(line_a, line_b)
 
-    if line_a_t_value is None:
+    # Co Linear lines
+    if ignore_overlapping and line_a_t_value is None:
         return False
 
     if (line_a_t_value < 0) or (line_a_t_value >  1):
@@ -89,9 +90,6 @@ def _compute_t_value(intersector, intersectee):
     P = intersectee[0]
 
     denominator = (A - B).dot(normal)
-
-    # TODO: Technically, this has infinitely many intersection points.
-    # Do I need to handle this better?
 
     if denominator == 0:
         return None
