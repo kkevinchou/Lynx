@@ -55,6 +55,12 @@ def within_epsilon(a, b, epsilon):
 def shares_point(line_a, line_b):
     return (line_a[0] == line_b[0]) or (line_a[1] == line_b[1]) or (line_a[0] == line_b[1]) or (line_a[1] == line_b[0])
 
+def shares_point2(t_value_a, t_value_b):
+    if (t_value_a in (0, 1)) and (t_value_b in (0, 1)):
+        return True
+    else:
+        return False
+
 def colinear(line_a, line_b):
     a_vec = (line_a[1] - line_a[0]).normalized()
     b_vec = (line_b[1] - line_b[0]).normalized()
@@ -62,9 +68,6 @@ def colinear(line_a, line_b):
     return within_epsilon(abs(a_vec.dot(b_vec)), 1, 0.01)
 
 def line_intersect(line_a, line_b, ignore_overlapping=False):
-    if shares_point(line_a, line_b):
-        return False
-
     line_a_t_value = _compute_t_value(line_a, line_b)
 
     # Co Linear lines
@@ -77,6 +80,15 @@ def line_intersect(line_a, line_b, ignore_overlapping=False):
     line_b_t_value = _compute_t_value(line_b, line_a)
 
     if (line_b_t_value < 0) or (line_b_t_value >  1):
+        return False
+
+    # Shares Point
+    if shares_point2(line_a_t_value, line_b_t_value):
+        return False
+
+    if shares_point(line_a, line_b):
+        if shares_point(line_a, line_b) != shares_point2(line_a_t_value, line_b_t_value):
+            print line_a_t_value, line_b_t_value
         return False
 
     return True
