@@ -38,9 +38,12 @@ while True:
         path_index = 0
         mouse_pos = pygame.mouse.get_pos()
         path = planner.find_path(int(position.x), int(position.y), mouse_pos[0], mouse_pos[1])
+    elif pygame.mouse.get_pressed()[2]:
+        break
 
     for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
+        if event.type == pygame.QUIT:
+            sys.exit()
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
@@ -62,8 +65,6 @@ while True:
             direction = target_node - position
             direction = direction.normalized()
             position = position + (direction * speed)
-    else:
-        break
 
     renderer.draw_circle(Vec2d(int(position.x), int(position.y)))
     renderer.flip()

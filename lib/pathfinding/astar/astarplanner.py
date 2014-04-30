@@ -46,12 +46,13 @@ class AStarPlanner(object):
         return min_node
 
     def init_start_goal(self, start_node, goal_node):
-        start_goal_nodes = [start_node, goal_node]
-
-        for node_a in start_goal_nodes:
+        for node_a in [start_node, goal_node]:
             for node_b in self.nodes:
                 if node_a == node_b:
-                    continue
+                    if node_a == start_node:
+                        raise Exception('Error, start node is already a node in the node list')
+                    elif node_a == goal_node:
+                        raise Exception('Error, goal node is already a node in the node list')
 
                 if not intersect_polygons([node_a, node_b], self.polygons):
                     self.neighbors[node_a].append(node_b)
@@ -87,7 +88,7 @@ class AStarPlanner(object):
         goal_node = Vec2d(x2, y2)
 
         if not intersect_polygons([start_node, goal_node], self.polygons):
-            return [goal_node]
+            return [start_node, goal_node]
 
         self.init_start_goal(start_node, goal_node)
 
