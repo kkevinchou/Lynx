@@ -5,7 +5,7 @@ from lib.vec2d import Vec2d
 from lib.geometry.util import generate_random_polygon
 from renderer import Renderer
 from lib.pathfinding.astar.astarplanner import AStarPlanner
-from lib.pathfinding.astar.polygon import Polygon
+from lib.geometry.polygon import Polygon
 
 dude = Polygon([Vec2d(1, 1), Vec2d(1, 0), Vec2d(0, 0), Vec2d(0, 1)])
 
@@ -32,7 +32,7 @@ speed = 5
 # planner.draw_neighbors(renderer, (15, 200, 200))
 
 clock = pygame.time.Clock()
-
+quit = False
 while True:
     if pygame.mouse.get_pressed()[0]:
         path_index = 0
@@ -43,10 +43,15 @@ while True:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            sys.exit()
+            quit = True
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
+        quit = True
+
+    if quit:
+        for obstacle in obstacles:
+            print obstacle.get_points()
         sys.exit()
 
     renderer.clear()

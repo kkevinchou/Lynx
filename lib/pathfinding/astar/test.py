@@ -1,10 +1,8 @@
 import unittest
 from lib.vec2d import Vec2d
 import sys, pygame
-from lib.pathfinding.astar.polygon import Polygon
-from lib.pathfinding.astar.util import (
-    colinear,
-    shares_point,
+from lib.geometry.polygon import Polygon
+from lib.geometry.util import (
     intersect_polygon,
     line_intersect
 )
@@ -42,20 +40,6 @@ class AStarTest(unittest.TestCase):
         line1 = [Vec2d(0, 0), Vec2d(1, 0)]
 
         self.assertFalse(intersect_polygon(line1, polygon))
-
-    def test_shares_point(self):
-        line_a = [Vec2d(1, 0), Vec2d(1, 1)]
-        line_b = [Vec2d(1, 1), Vec2d(0, 1)]
-        line_c = [Vec2d(0, 1), Vec2d(0, 0)]
-
-        self.assertTrue(shares_point(line_a, line_b))
-        self.assertFalse(shares_point(line_a, line_c))
-
-    def test_colinear(self):
-        self.assertFalse(colinear([Vec2d(0, 0), Vec2d(1, 0)], [Vec2d(0, 0), Vec2d(0, 1)]))
-        self.assertFalse(colinear([Vec2d(0, 0), Vec2d(1, 0)], [Vec2d(0, 0), Vec2d(0, -1)]))
-        self.assertTrue(colinear([Vec2d(0, 0), Vec2d(1, 0)], [Vec2d(0, 0), Vec2d(-1, 0)]))
-        self.assertTrue(colinear([Vec2d(0, 0), Vec2d(1, 0)], [Vec2d(0, 0), Vec2d(1, 0)]))
 
     def ztest_visual(self):
         pygame.init()
