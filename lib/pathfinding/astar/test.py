@@ -6,6 +6,7 @@ from lib.geometry.util import (
     intersect_polygon,
     line_intersect
 )
+from lib.pathfinding.astar.astarplanner import AStarPlanner
 
 class AStarTest(unittest.TestCase):
     def setUp(self):
@@ -40,6 +41,19 @@ class AStarTest(unittest.TestCase):
         line1 = [Vec2d(0, 0), Vec2d(1, 0)]
 
         self.assertFalse(intersect_polygon(line1, polygon))
+
+    def test_same_start_point_is_node(self):
+        polygon = Polygon()
+        polygon.add_point(0, 1)
+        polygon.add_point(0, 2)
+        polygon.add_point(1, 2)
+        polygon.add_point(1, 1)
+
+        planner = AStarPlanner()
+        planner.add_polygon(polygon)
+        planner.init()
+
+        planner.find_path(0, 0, 1, 2)
 
     def ztest_visual(self):
         pygame.init()

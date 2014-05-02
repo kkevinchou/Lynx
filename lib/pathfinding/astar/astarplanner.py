@@ -46,34 +46,45 @@ class AStarPlanner(object):
         return min_node
 
     def init_start_goal(self, start_node, goal_node):
-        for node_a in [start_node, goal_node]:
-            for node_b in self.nodes:
-                if node_a == node_b:
-                    if node_a == start_node:
-                        raise Exception('Error, start node is already a node in the node list')
-                    elif node_a == goal_node:
-                        raise Exception('Error, goal node is already a node in the node list')
+        self.clean_start_node = True
+        self.clean_goal_node = True
 
-                if not intersect_polygons([node_a, node_b], self.polygons):
-                    self.neighbors[node_a].append(node_b)
-                    self.neighbors[node_b].append(node_a)
+        for start_goal_node in [start_node, goal_node]:
+            for node in self.nodes:
+                if start_goal_node == node:
+                    if start_goal_node == start_node:
+                        print 'hi'
+                        self.clean_start_node = False
+                    elif start_goal_node == goal_node:
+                        self.clean_goal_node = False
+                elif not intersect_polygons([start_goal_node, node], self.polygons):
+                    if node not in self.neighbors[start_goal_node]:
+                        self.neighbors[start_goal_node].append(node)
+
+                    if start_goal_node not in self.neighbors[node]:
+                        self.neighbors[node].append(start_goal_node)
 
     def cleanup_start_goal(self, start_node, goal_node):
+        if self.clean_start_node:
+            self.remove_node(start_node)
+
+        if self.clean_goal_node:
+            self.remove_node(goal_node)
+
+    def remove_node(self, r_node):
+        try:
+            self.nodes.remove(r_node)
+        except ValueError:
+            pass
+
+        self.neighbors.pop(r_node)
+
         for node, neighbors in self.neighbors.iteritems():
             try:
-                neighbors.remove(start_node)
-            except ValueError:
-                pass
-            try:
-                neighbors.remove(goal_node)
+                neighbors.remove(r_node)
             except ValueError:
                 pass
 
-        self.neighbors.pop(start_node)
-        self.neighbors.pop(goal_node)
-
-    def remove_node(self, node):
-        self.nodes.remove(node)
 
     def add_node(self, node):
         self.nodes.append(node)
@@ -148,6 +159,7 @@ class AStarPlanner(object):
         path.reverse()
 
         self.cleanup_start_goal(start_node, goal_node)
+
         return path
         
 
