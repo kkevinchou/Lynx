@@ -9,7 +9,7 @@ from lib.pathfinding.astar.util import (
     line_intersect
 )
 
-class Test(unittest.TestCase):
+class AStarTest(unittest.TestCase):
     def setUp(self):
         pass
 

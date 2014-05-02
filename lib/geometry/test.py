@@ -4,7 +4,7 @@ from lib.geometry.util import generate_convex_hull, generate_random_polygon
 from lib.vec2d import Vec2d
 import sys, pygame
 
-class Test(unittest.TestCase):
+class GeometryTest(unittest.TestCase):
     def setUp(self):
         pass
 
