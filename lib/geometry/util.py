@@ -11,6 +11,12 @@ def line_in_polygon(line, polygon):
             return True
     return False
 
+def distance_between(node_a, node_b):
+    point_a = Vec2d(node_a.x, node_a.y)
+    point_b = Vec2d(node_b.x, node_b.y)
+
+    return (point_a - point_b).get_length()
+
 def polygons_intersect(polygon_a, polygon_b):
     for edge in polygon_a.get_edges():
         if intersect_polygon(edge, polygon_b):

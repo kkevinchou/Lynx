@@ -1,1 +1,1 @@
-python2.7-32 ktest.py
+python ktest.py

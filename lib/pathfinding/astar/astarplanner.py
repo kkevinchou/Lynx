@@ -2,7 +2,7 @@ from lib.vec2d import Vec2d
 from collections import defaultdict
 from Queue import PriorityQueue
 from heapq import heappush, heappop, heapify
-from util import (
+from lib.geometry.util import (
     distance_between,
     intersect_polygons,
 )
