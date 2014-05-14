@@ -2,30 +2,37 @@ import unittest
 import sys, pygame
 
 from lib.vec2d import Vec2d
-from lib.geometry.util import generate_random_polygon
+from lib.geometry.util import generate_random_polygon, create_polygons
 from renderer import Renderer
 from lib.pathfinding.astar.astarplanner import AStarPlanner
 from lib.geometry.polygon import Polygon
 
 dude = Polygon([Vec2d(1, 1), Vec2d(1, 0), Vec2d(0, 0), Vec2d(0, 1)])
 
-obstacle1 = generate_random_polygon(100, 50, 200, 200, 10)
-obstacle2 = generate_random_polygon(100, 201, 200, 300, 10)
-obstacle3 = generate_random_polygon(100, 301, 200, 500, 10)
-obstacle4 = generate_random_polygon(300, 201, 500, 300, 10)
-obstacle5 = generate_random_polygon(700, 401, 800, 600, 10)
-obstacle6 = generate_random_polygon(500, 401, 600, 600, 10)
+# obstacle1 = generate_random_polygon(100, 50, 200, 200, 10)
+# obstacle2 = generate_random_polygon(100, 201, 200, 300, 10)
+# obstacle3 = generate_random_polygon(100, 301, 200, 500, 10)
+# obstacle4 = generate_random_polygon(300, 201, 500, 300, 10)
+# obstacle5 = generate_random_polygon(700, 401, 800, 600, 10)
+# obstacle6 = generate_random_polygon(500, 401, 600, 600, 10)
 
-obstacles = [obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6]
+vertex_lists = [
+    [Vec2d(540, 591), Vec2d(600, 571), Vec2d(590, 440), Vec2d(542, 471), Vec2d(533, 576)]
+]
+
+# obstacles = [obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6]
+obstacles = create_polygons(vertex_lists)
 
 planner = AStarPlanner()
 planner.add_polygons(obstacles)
 planner.init()
 
+start_pos = (596, 526)
+goal_pos = (462, 516)
 renderer = Renderer(800, 600)
-path = planner.find_path(0, 0, 800, 600)
+path = planner.find_path(start_pos[0], start_pos[1], goal_pos[0], goal_pos[1])
 
-position = Vec2d(0, 0)
+position = Vec2d(start_pos[0], start_pos[1])
 path_index = 0
 speed = 5
 
@@ -37,6 +44,7 @@ while True:
     if pygame.mouse.get_pressed()[0]:
         path_index = 0
         mouse_pos = pygame.mouse.get_pos()
+        print int(position.x), int(position.y), mouse_pos[0], mouse_pos[1]
         path = planner.find_path(int(position.x), int(position.y), mouse_pos[0], mouse_pos[1])
     elif pygame.mouse.get_pressed()[2]:
         break

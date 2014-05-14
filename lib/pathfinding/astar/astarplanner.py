@@ -53,7 +53,6 @@ class AStarPlanner(object):
             for node in self.nodes:
                 if start_goal_node == node:
                     if start_goal_node == start_node:
-                        print 'hi'
                         self.clean_start_node = False
                     elif start_goal_node == goal_node:
                         self.clean_goal_node = False

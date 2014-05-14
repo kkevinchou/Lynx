@@ -100,6 +100,13 @@ def _compute_t_value(intersector, intersectee):
 
     return (A - P).dot(normal) / denominator
 
+def create_polygons(vertex_lists):
+    from lib.geometry.polygon import Polygon
+    polygons = []
+    for vertex_list in vertex_lists:
+        polygons.append(Polygon(vertex_list))
+
+    return polygons
 
 def generate_random_polygon(x_min, y_min, x_max, y_max, num_points):
     from lib.geometry.polygon import Polygon
