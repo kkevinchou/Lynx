@@ -60,6 +60,7 @@ def shares_point2(t_value_a, t_value_b):
         return False
 
 def line_intersect(line_a, line_b, ignore_overlapping=False):
+    print line_a, line_b
     line_a_t_value = _compute_t_value(line_a, line_b)
 
     # Co Linear lines
