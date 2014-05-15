@@ -2,6 +2,8 @@ import random
 import pygame
 from lib.vec2d import Vec2d
 
+EPSILON = 0.02
+
 def line_segment_equal(line_a, line_b):
     return (line_a[0] == line_b[0] and line_a[1] == line_b[1]) or (line_a[0] == line_b[1] and line_a[1] == line_b[0])
 
@@ -60,28 +62,30 @@ def shares_point2(t_value_a, t_value_b):
         return False
 
 def line_intersect(line_a, line_b, ignore_overlapping=False):
-    print line_a, line_b
     line_a_t_value = _compute_t_value(line_a, line_b)
 
     # Co Linear lines
     if ignore_overlapping and line_a_t_value is None:
         return False
 
-    if (line_a_t_value < 0) or (line_a_t_value >  1):
+    if (line_a_t_value < (0 - EPSILON)) or (line_a_t_value >  (1 + EPSILON)):
         return False
 
     line_b_t_value = _compute_t_value(line_b, line_a)
 
-    if (line_b_t_value < 0) or (line_b_t_value >  1):
+    if (line_b_t_value < (0 - EPSILON)) or (line_b_t_value >  (1 + EPSILON)):
         return False
 
-    # Shares Point
     if shares_point2(line_a_t_value, line_b_t_value):
         return False
 
     if shares_point(line_a, line_b):
         if shares_point(line_a, line_b) != shares_point2(line_a_t_value, line_b_t_value):
-            print line_a_t_value, line_b_t_value
+            print 'WAHH DID NOT ExPECT TO HIT THIS {}, {}'.format(line_a_t_value, line_b_t_value)
+            print line_a, line_b
+            print 'shared_point1 {}'.format(shares_point(line_a, line_b))
+            print 'shares_point2 {}'.format(shares_point2(line_a_t_value, line_b_t_value))
+
         return False
 
     return True

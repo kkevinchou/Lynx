@@ -55,6 +55,16 @@ class AStarTest(unittest.TestCase):
 
         planner.find_path(0, 0, 1, 2)
 
+    def test_line_intersect_epsilon(self):
+        polygon = Polygon([Vec2d(540, 591), Vec2d(600, 571), Vec2d(590, 440), Vec2d(542, 471), Vec2d(533, 576)])
+
+        planner = AStarPlanner()
+        planner.add_polygon(polygon)
+        planner.init()
+
+        path = planner.find_path(596, 526, 462, 516)
+        self.assertEquals(path, [Vec2d(596, 526), Vec2d(600, 571), Vec2d(540, 591), Vec2d(462, 516)])
+
     def ztest_visual(self):
         pygame.init()
         size = width, height = 320, 240
