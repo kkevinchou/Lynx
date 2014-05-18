@@ -1,6 +1,7 @@
 class Entity(object):
     def __init__(self):
         self.components = {}
+        self.initialize_entity()
 
     def get_component(self, component_id):
         return self.components.get(component_id, None)
