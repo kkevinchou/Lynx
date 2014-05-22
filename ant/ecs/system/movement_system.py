@@ -31,7 +31,7 @@ class MovementSystem(System):
                 intermediate_target = path[path_index]
 
                 if intermediate_target.get_distance(entity.position) < speed * delta:
-                    entity.position = intermediate_target
+                    entity.position = intermediate_target.copy()
                     movement_component.path_index += 1
                 else:
                     direction = (intermediate_target - entity.position).normalized()
