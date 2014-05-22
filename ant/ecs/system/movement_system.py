@@ -18,12 +18,11 @@ class MovementSystem(System):
     # delta - seconds
     # speed - pixels/second
     def update(self, delta):
-        speed = 100
-
         for entity in MovementSystem.entities:
             movement_component = entity.get_component(MovementComponent)
             path = movement_component.path
             path_index = movement_component.path_index
+            speed = movement_component.speed
 
             if path is None:
                 continue

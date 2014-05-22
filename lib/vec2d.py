@@ -327,6 +327,9 @@ class Vec2d(object):
  
     def __setstate__(self, dict):
         self.x, self.y = dict
+
+    def copy(self):
+        return Vec2d(self.x, self.y)
  
 ########################################################################
 ## Unit Testing                                                       ##

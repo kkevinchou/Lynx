@@ -152,7 +152,7 @@ class AStarPlanner(object):
         path = []
         path_node = goal_node
         while path_node is not None:
-            path.append(path_node)
+            path.append(path_node.copy())
             path_node = path_map.get(path_node)
 
         # Remove the starting node
