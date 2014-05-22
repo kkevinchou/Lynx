@@ -98,7 +98,7 @@ class AStarPlanner(object):
         goal_node = Vec2d(x2, y2)
 
         if not intersect_polygons([start_node, goal_node], self.polygons):
-            return [start_node, goal_node]
+            return [goal_node]
 
         self.init_start_goal(start_node, goal_node)
 
@@ -155,6 +155,8 @@ class AStarPlanner(object):
             path.append(path_node)
             path_node = path_map.get(path_node)
 
+        # Remove the starting node
+        path.pop()
         path.reverse()
 
         self.cleanup_start_goal(start_node, goal_node)

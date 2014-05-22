@@ -14,7 +14,7 @@ from renderer import Renderer
 from lib.pathfinding.astar.astarplanner import AStarPlanner
 from lib.geometry.polygon import Polygon
 from ant.ecs.entity.queen import Queen
-from ant.ecs.system.movement_system import MovemenSystem
+from ant.ecs.system.movement_system import MovementSystem
 
 queen = Queen()
 dude = Polygon([Vec2d(1, 1), Vec2d(1, 0), Vec2d(0, 0), Vec2d(0, 1)])
@@ -34,6 +34,7 @@ planner.init()
 renderer = Renderer(800, 600)
 
 movement_system = MovementSystem()
+movement_system.set_planner(planner)
 movement_system.register(queen)
 
 # planner.draw_neighbors(renderer, (15, 200, 200))

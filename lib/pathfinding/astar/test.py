@@ -63,7 +63,7 @@ class AStarTest(unittest.TestCase):
         planner.init()
 
         path = planner.find_path(596, 526, 462, 516)
-        self.assertEquals(path, [Vec2d(596, 526), Vec2d(600, 571), Vec2d(540, 591), Vec2d(462, 516)])
+        self.assertEquals(path, [Vec2d(600, 571), Vec2d(540, 591), Vec2d(462, 516)])
 
     def ztest_visual(self):
         pygame.init()

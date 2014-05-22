@@ -4,41 +4,41 @@ from ant.ecs.component.movement_component import MovementComponent
 class MovementSystem(System):
     entities = []
 
-    def __init__(self):
-        self.paths = {}
-        self.path_indices = {}
+    def set_planner(self, planner):
+        self.planner = planner
 
     def register(self, entity):
         MovementSystem.entities.append(entity)
 
     def set_target(self, entity, goal):
-        self.path_indicies[entity] = 0
-        self.paths[entity] = planner.find_path(int(entity.position[0]), int(entity.position[1]), goal[0], goal[1])
+        movement_component = entity.get_component(MovementComponent)
+        movement_component.path_index = 0
+        movement_component.path = self.planner.find_path(int(entity.position[0]), int(entity.position[1]), goal[0], goal[1])
 
     # delta - seconds
     # speed - pixels/second
     def update(self, delta):
-        speed = 50
+        speed = 100
 
-        for entity in entities:
-            path = self.paths.get(entity)
-            path_index = self.path_indicies.get(entity)
+        for entity in MovementSystem.entities:
+            movement_component = entity.get_component(MovementComponent)
+            path = movement_component.path
+            path_index = movement_component.path_index
 
-            if path is None or path_index is None:
+            if path is None:
                 continue
 
             if path_index < len(path):
                 intermediate_target = path[path_index]
 
-                if intermediate_target.get_distance(entity.position) < speed:
+                if intermediate_target.get_distance(entity.position) < speed * delta:
                     entity.position = intermediate_target
-                    self.path_indicies[entity] += 1
+                    movement_component.path_index += 1
                 else:
-                    direction = self.target - entity.position
-                    distance = direction.normalized() * speed * delta
-                    entity.position += distance
+                    direction = (intermediate_target - entity.position).normalized()
+                    scaled_velocity = direction * speed * delta
+                    entity.position += scaled_velocity
             else:
                 # Path complete
-                self.paths.pop(entity)
-                self.path_indicies.pop(entity)
+                movement_component.path = None
         

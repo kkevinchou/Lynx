@@ -5,8 +5,9 @@ from lib.vec2d import Vec2d
 
 class Queen(Entity):
     def __init__(self):
-        self.position = Vec2D(0, 0)
-        
+        super(Queen, self).__init__()
+        self.position = Vec2d(0, 0)
+
     def initialize_entity(self):
         reproduce_component = ReproduceComponent()
         movement_component = MovementComponent()
