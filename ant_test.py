@@ -76,7 +76,6 @@ def run():
 
         path = queen.get_component(MovementComponent).path
         if path is not None:
-            print path
             renderer.draw_lines(queen.get_component(MovementComponent).path, (255, 0, 0))
 
         renderer.draw_circle(Vec2d(int(queen.position[0]), int(queen.position[1])))

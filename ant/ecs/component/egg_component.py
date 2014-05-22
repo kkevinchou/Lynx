@@ -1,7 +1,7 @@
 from lib.ecs.component.component import Component
 
-class ReproduceComponent(Component):
-    component_id = 'ReproduceComponent'
+class EggComponent(Component):
+    component_id = 'EggComponent'
 
     def __init__(self):
         self.egg = None
