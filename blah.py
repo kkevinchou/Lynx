@@ -15,6 +15,7 @@ from lib.pathfinding.astar.astarplanner import AStarPlanner
 from lib.geometry.polygon import Polygon
 from ant.ecs.entity.queen import Queen
 from ant.ecs.system.movement_system import MovementSystem
+from ant.ecs.system.render_system import RenderSystem
 from ant.ecs.component.movement_component import MovementComponent
 
 def set_up_obstacles():
@@ -44,6 +45,8 @@ def run():
     movement_system.set_planner(planner)
     movement_system.register(queen)
 
+    render_system = RenderSystem()
+
     # planner.draw_neighbors(renderer, (15, 200, 200))
 
     clock = pygame.time.Clock()
@@ -51,6 +54,7 @@ def run():
 
     while True:
         movement_system.update(1 / float(30))
+        render_system.update(1 / float(30))
 
         if pygame.mouse.get_pressed()[0]:
             mouse_pos = pygame.mouse.get_pos()
