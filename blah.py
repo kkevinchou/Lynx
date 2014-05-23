@@ -41,7 +41,7 @@ def run():
 
     queen = Queen()
 
-    movement_system = MovementSystem()
+    movement_system = MovementSystem.get_instance()
     movement_system.set_planner(planner)
     movement_system.register(queen)
 

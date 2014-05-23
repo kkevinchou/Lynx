@@ -3,12 +3,18 @@ from ant.ecs.component.movement_component import MovementComponent
 
 class MovementSystem(System):
     entities = []
+    queued_entities = []
+    instance = None
+
+    @staticmethod
+    def get_instance():
+        if MovementSystem.instance is None:
+            MovementSystem.instance = MovementSystem()
+
+        return MovementSystem.instance
 
     def set_planner(self, planner):
         self.planner = planner
-
-    def register(self, entity):
-        MovementSystem.entities.append(entity)
 
     def set_target(self, entity, goal):
         movement_component = entity.get_component(MovementComponent)
@@ -18,6 +24,8 @@ class MovementSystem(System):
     # delta - seconds
     # speed - pixels/second
     def update(self, delta):
+        self.append_queued_entities()
+
         for entity in MovementSystem.entities:
             movement_component = entity.get_component(MovementComponent)
             path = movement_component.path
