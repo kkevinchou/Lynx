@@ -38,7 +38,7 @@ def set_up_systems():
     system_manager = SystemManager.get_instance()
 
     movement_system = set_up_movement_system()
-    render_system = RenderSystem()
+    render_system = RenderSystem(800, 600)
 
     system_manager.init(
         [
