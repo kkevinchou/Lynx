@@ -8,15 +8,45 @@
 import unittest
 import sys, pygame
 
+from ant.renderer import Renderer
+
 from lib.vec2d import Vec2d
 from lib.geometry.util import generate_random_polygon, create_polygons
-from renderer import Renderer
 from lib.pathfinding.astar.astarplanner import AStarPlanner
 from lib.geometry.polygon import Polygon
+from lib.ecs.system_manager import SystemManager
+
 from ant.ecs.entity.queen import Queen
 from ant.ecs.system.movement_system import MovementSystem
 from ant.ecs.system.render_system import RenderSystem
 from ant.ecs.component.movement_component import MovementComponent
+from ant.ecs.message_types import MESSAGE_TYPE
+
+def set_up_movement_system():
+    obstacles = set_up_obstacles()
+
+    planner = AStarPlanner()
+    planner.add_polygons(obstacles)
+    planner.init()
+
+    movement_system = MovementSystem()
+    movement_system.set_planner(planner)
+
+    return movement_system
+
+def set_up_systems():
+    system_manager = SystemManager.get_instance()
+
+    movement_system = set_up_movement_system()
+    render_system = RenderSystem()
+
+    system_manager.init(
+        [
+            movement_system,
+            render_system,
+        ]
+    )
+    return system_manager
 
 def set_up_obstacles():
     obstacle1 = generate_random_polygon(100, 50, 200, 200, 10)
@@ -31,34 +61,23 @@ def set_up_obstacles():
     return obstacles
 
 def run():
-    obstacles = set_up_obstacles()
-
-    planner = AStarPlanner()
-    planner.add_polygons(obstacles)
-    planner.init()
-
-    renderer = Renderer(800, 600)
+    system_manager = set_up_systems()
 
     queen = Queen()
-
-    movement_system = MovementSystem()
-    movement_system.set_planner(planner)
-    movement_system.register(queen)
-
-    render_system = RenderSystem()
-
-    # planner.draw_neighbors(renderer, (15, 200, 200))
 
     clock = pygame.time.Clock()
     quit = False
 
     while True:
-        movement_system.update(1 / float(30))
-        render_system.update(1 / float(30))
+        system_manager.update(1 / float(30))
 
         if pygame.mouse.get_pressed()[0]:
             mouse_pos = pygame.mouse.get_pos()
-            movement_system.set_target(queen, mouse_pos)
+            system_manager.send_message({
+                'message_type': MESSAGE_TYPE.MOVE_ENTITY,
+                'entity': queen,
+                'goal': mouse_pos,
+            })
         elif pygame.mouse.get_pressed()[2]:
             break
 
@@ -72,18 +91,6 @@ def run():
 
         if quit:
             sys.exit()
-
-        renderer.clear()
-
-        for obstacle in obstacles:
-            renderer.draw(obstacle)
-
-        path = queen.get_component(MovementComponent).path
-        if path is not None:
-            renderer.draw_lines(queen.get_component(MovementComponent).path, (255, 0, 0))
-
-        renderer.draw_circle(Vec2d(int(queen.position[0]), int(queen.position[1])))
-        renderer.flip()
 
         clock.tick(30)
 
