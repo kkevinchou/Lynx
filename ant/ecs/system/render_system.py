@@ -4,7 +4,6 @@ from lib.ecs.system.system import System
 from lib.vec2d import Vec2d
 from ant.ecs.component.movement_component import MovementComponent
 from ant.ecs.message_types import MESSAGE_TYPE
-from ant.renderer import Renderer
 
 class RenderSystem(System):
     def __init__(self, width, height):
