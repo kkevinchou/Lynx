@@ -8,8 +8,6 @@
 import unittest
 import sys, pygame
 
-from ant.renderer import Renderer
-
 from lib.vec2d import Vec2d
 from lib.geometry.util import generate_random_polygon, create_polygons
 from lib.pathfinding.astar.astarplanner import AStarPlanner

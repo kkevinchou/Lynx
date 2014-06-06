@@ -1,5 +1,5 @@
 from lib.ecs.entity.entity import Entity
-from ant.notification_center import NotificationCenter
+from ant.ecs.message_center import MessageCenter
 
 class AntBase(Entity):
-	notification_center = NotificationCenter.get_instance()
+	message_center = MessageCenter.get_instance()
