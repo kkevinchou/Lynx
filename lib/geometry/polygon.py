@@ -12,7 +12,7 @@ class Polygon(object):
             raise Exception('Points in Polygon must be distinct')
 
     def get_points(self):
-        return self.points
+        return self.points[:]
 
     def add_point(self, x, y):
         new_point = Vec2d(x, y)
@@ -23,14 +23,14 @@ class Polygon(object):
         self.points.append(new_point)
 
     def add_points(self, points):
-        self.points.extend(points)
+        self.points.extend(points[:])
 
         if len(self.points) != len(set(self.points)):
             raise Exception('Points in Polygon must be distinct')
 
     def get_edges(self):
         num_points = len(self.points)
-        return [[self.points[i], self.points[(i + 1) % num_points]] for i in range(num_points)]
+        return [[self.points[i].copy(), self.points[(i + 1) % num_points].copy()] for i in range(num_points)]
 
     def compute_c_polygon(self, agent):
         agent_points = agent.get_points()
