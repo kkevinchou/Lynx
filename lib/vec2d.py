@@ -28,6 +28,7 @@ class Vec2d(object):
             raise IndexError("Invalid subscript "+str(key)+" to Vec2d")
  
     def __setitem__(self, key, value):
+        raise Exception('Vec2d is immutable!')
         if key == 0:
             self.x = value
         elif key == 1:
