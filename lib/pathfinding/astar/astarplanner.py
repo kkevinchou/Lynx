@@ -33,18 +33,6 @@ class AStarPlanner(object):
                 if not intersect_polygons([node_a, node_b], self.polygons):
                     self.neighbors[node_a].append(node_b)
 
-    def get_closest_node(self, node):
-        min_dist = distance_between(node, self.nodes[0])
-        min_node = self.nodes[0]
-
-        for current_node in self.nodes:
-            dist = distance_between(node, current_node)
-            if dist < min_dist:
-                min_dist = dist
-                min_node = node
-
-        return min_node
-
     def init_start_goal(self, start_node, goal_node):
         self.clean_start_node = True
         self.clean_goal_node = True
@@ -83,10 +71,6 @@ class AStarPlanner(object):
                 neighbors.remove(r_node)
             except ValueError:
                 pass
-
-
-    def add_node(self, node):
-        self.nodes.append(node)
 
     def draw_neighbors(self, renderer, color=(0, 0, 0)):
         for node, neighbors in self.neighbors.iteritems():

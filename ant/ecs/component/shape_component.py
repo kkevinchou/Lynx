@@ -2,6 +2,7 @@ from lib.ecs.component.component import Component
 from lib.geometry.polygon import Polygon
 from lib.geometry.util import generate_random_polygon
 
+# TODO: This should be a lib class
 class ShapeComponent(Component):
     component_id = 'ShapeComponent'
 
