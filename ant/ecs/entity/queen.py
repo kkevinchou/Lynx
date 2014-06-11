@@ -1,6 +1,6 @@
 from ant.ecs.entity.ant_base import AntBase
 from ant.ecs.component.movement_component import MovementComponent
-from ant.ecs.component.simple_render_component import SimpleRenderComponent
+from ant.ecs.component.render import SimpleRenderComponent
 from ant.ecs.component.reproduction_component import ReproductionComponent
 from lib.vec2d import Vec2d
 from lib.ecs.system_manager import SystemManager
