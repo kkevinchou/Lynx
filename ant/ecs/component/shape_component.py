@@ -13,3 +13,6 @@ class ShapeComponent(Component):
 
     def get_points(self):
         return self.points
+
+    def get_polygon(self):
+        return self.polygon

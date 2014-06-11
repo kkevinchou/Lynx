@@ -2,6 +2,7 @@ from lib.vec2d import Vec2d
 from collections import defaultdict
 from Queue import PriorityQueue
 from heapq import heappush, heappop, heapify
+from ant.ecs.component.shape_component import ShapeComponent
 from lib.geometry.util import (
     distance_between,
     intersect_polygons,
@@ -20,6 +21,10 @@ class AStarPlanner(object):
     def add_polygons(self, polygons):
         for polygon in polygons:
             self.add_polygon(polygon)
+
+    def register_entity(self, entity):
+        shape_component = entity[ShapeComponent]
+        self.add_polygon(shape_component.get_polygon())
 
     def init(self):
         self.compute_neighbours()

@@ -15,27 +15,16 @@ from lib.geometry.polygon import Polygon
 from lib.ecs.system_manager import SystemManager
 
 from ant.ecs.entity.queen import Queen
+from ant.ecs.entity.obstacle import Obstacle
 from ant.ecs.system.movement_system import MovementSystem
 from ant.ecs.system.render_system import RenderSystem
 from ant.ecs.component.movement_component import MovementComponent
 from ant.ecs.message_types import MESSAGE_TYPE
 
-def set_up_movement_system():
-    obstacles = set_up_obstacles()
-
-    planner = AStarPlanner()
-    planner.add_polygons(obstacles)
-    planner.init()
-
-    movement_system = MovementSystem()
-    movement_system.set_planner(planner)
-
-    return movement_system
-
 def set_up_systems():
     system_manager = SystemManager.get_instance()
 
-    movement_system = set_up_movement_system()
+    movement_system = MovementSystem(AStarPlanner())
     render_system = RenderSystem(800, 600)
 
     system_manager.init(
@@ -44,22 +33,20 @@ def set_up_systems():
             render_system,
         ]
     )
+
     return system_manager
-
-def set_up_obstacles():
-    obstacle1 = generate_random_polygon(100, 50, 200, 200, 10)
-    obstacle2 = generate_random_polygon(100, 201, 200, 300, 10)
-    obstacle3 = generate_random_polygon(100, 301, 200, 500, 10)
-    obstacle4 = generate_random_polygon(300, 201, 500, 300, 10)
-    obstacle5 = generate_random_polygon(700, 401, 800, 600, 10)
-    obstacle6 = generate_random_polygon(500, 401, 600, 600, 10)
-
-    obstacles = [obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6]
-
-    return obstacles
 
 def run():
     system_manager = set_up_systems()
+
+    obstacle1 = Obstacle(100, 50, 200, 200, 10)
+    obstacle2 = Obstacle(100, 201, 200, 300, 10)
+    obstacle3 = Obstacle(100, 301, 200, 500, 10)
+    obstacle4 = Obstacle(300, 201, 500, 300, 10)
+    obstacle5 = Obstacle(700, 401, 800, 600, 10)
+    obstacle6 = Obstacle(500, 401, 600, 600, 10)
+
+    system_manager.send_message({'message_type': MESSAGE_TYPE.INIT_MOVEMENT_PLANNER})
 
     queen = Queen()
 
