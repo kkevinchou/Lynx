@@ -16,6 +16,8 @@ class RenderSystem(System):
         self.screen = pygame.display.set_mode(size, 0, 32)
         self.entities = []
 
+        pygame.display.set_caption('ANTZ')
+
         message_handlers = {
             MESSAGE_TYPE.CREATE_ENTITY: self.handle_create_entity,
         }
