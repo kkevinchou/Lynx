@@ -14,12 +14,14 @@ from lib.pathfinding.astar.astarplanner import AStarPlanner
 from lib.geometry.polygon import Polygon
 from lib.ecs.system_manager import SystemManager
 
+from ant import settings
 from ant.ecs.entity.queen import Queen
 from ant.ecs.entity.obstacle import Obstacle
 from ant.ecs.system.movement_system import MovementSystem
 from ant.ecs.system.render_system import RenderSystem
 from ant.ecs.component.movement_component import MovementComponent
 from ant.ecs.message_types import MESSAGE_TYPE
+from lib.resource_manager import ResourceManager
 
 def set_up_systems():
     system_manager = SystemManager.get_instance()
@@ -37,6 +39,9 @@ def set_up_systems():
     return system_manager
 
 def run():
+    resource_manager = ResourceManager.get_instance()
+    resource_manager.setup(settings.SPRITES_FOLDER)
+
     system_manager = set_up_systems()
 
     obstacle1 = Obstacle(100, 50, 200, 200, 10)

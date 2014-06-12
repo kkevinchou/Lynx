@@ -3,6 +3,9 @@ import pygame
 from lib.ecs.component.component import Component
 from ant.ecs.component.shape_component import ShapeComponent
 from ant.ecs.component.movement_component import MovementComponent
+from lib.resource_manager import ResourceManager
+
+from ant.settings import SPRITES_FOLDER
 
 class RenderComponent(Component):
     component_id = 'RenderComponent'
@@ -12,6 +15,17 @@ class RenderComponent(Component):
 
     def draw(self, screen, color=(0, 0, 0)):
         raise NotImplementedError()
+
+class SpriteRenderComponent(RenderComponent):
+    component_id = 'RenderComponent'
+    resource_manager = ResourceManager.get_instance()
+
+    def __init__(self, entity, sprite_file):
+        super(SpriteRenderComponent, self).__init__(entity)
+        self.sprite = SpriteRenderComponent.resource_manager.get_sprite(sprite_file)
+
+    def draw(self, screen):
+        screen.blit(self.sprite, self.entity.position)
 
 class ShapeRenderComponent(RenderComponent):
     component_id = 'RenderComponent'
