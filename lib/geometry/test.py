@@ -8,6 +8,16 @@ class GeometryTest(unittest.TestCase):
     def setUp(self):
         pass
 
+    def test_convex_hull_deterministic(self):
+        length = None
+        for i in range(100):
+            points = [Vec2d(189, 442), Vec2d(189, 378), Vec2d(125, 378), Vec2d(125, 442), Vec2d(189, 350), Vec2d(189, 286), Vec2d(125, 286), Vec2d(125, 350), Vec2d(167, 346), Vec2d(167, 282), Vec2d(103, 282), Vec2d(103, 346), Vec2d(133, 376), Vec2d(133, 312), Vec2d(69, 312), Vec2d(69, 376), Vec2d(133, 442), Vec2d(133, 378), Vec2d(69, 378), Vec2d(69, 442)]
+            num_points = len(generate_convex_hull(points))
+            if length:
+                self.assertEquals(num_points, length)
+            else:
+                length = num_points
+
     def test_broken_hull_history1(self):
         points = [Vec2d(60, 130), Vec2d(65, 83), Vec2d(105, 74), Vec2d(141, 136), Vec2d(79, 123)]
         hull_points = generate_convex_hull(points)
@@ -27,53 +37,53 @@ class GeometryTest(unittest.TestCase):
         points = [Vec2d(1, 0), Vec2d(0, 0), Vec2d(0.5, 0.5),Vec2d(0, 1), Vec2d(1, 1)]
         self.assertEqual(generate_convex_hull(points), [Vec2d(1, 1), Vec2d(1, 0), Vec2d(0, 0), Vec2d(0, 1)])
 
-    def ztest_visual(self):
-        pygame.init()
-        size = width, height = 320, 240
-        screen = pygame.display.set_mode(size, 0, 32)
-        clock = pygame.time.Clock()
+    # def ztest_visual(self):
+    #     pygame.init()
+    #     size = width, height = 320, 240
+    #     screen = pygame.display.set_mode(size, 0, 32)
+    #     clock = pygame.time.Clock()
 
-        black = (0, 0, 0)
-        white = (255, 255, 255)
-        green = (0, 255, 0)
-        red = (255, 0, 0)
-        bleh = (155, 10, 110)
+    #     black = (0, 0, 0)
+    #     white = (255, 255, 255)
+    #     green = (0, 255, 0)
+    #     red = (255, 0, 0)
+    #     bleh = (155, 10, 110)
 
-        x_min = 50
-        y_min = 50
-        x_max = 100
-        y_max = 100
+    #     x_min = 50
+    #     y_min = 50
+    #     x_max = 100
+    #     y_max = 100
 
-        polygon = generate_random_polygon(x_min, y_min, x_max, y_max, 10)
-        points = polygon.get_points()
+    #     polygon = generate_random_polygon(x_min, y_min, x_max, y_max, 10)
+    #     points = polygon.get_points()
 
-        screen.fill(white)
+    #     screen.fill(white)
 
-        for point in points:
-            draw_color = black
-            pygame.draw.circle(screen, draw_color, (point.x, point.y), 3, 3)
+    #     for point in points:
+    #         draw_color = black
+    #         pygame.draw.circle(screen, draw_color, (point.x, point.y), 3, 3)
 
-        hull_points = generate_convex_hull(points, screen)
+    #     hull_points = generate_convex_hull(points, screen)
 
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT: sys.exit()
+    #     while True:
+    #         for event in pygame.event.get():
+    #             if event.type == pygame.QUIT: sys.exit()
 
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_ESCAPE]:
-                sys.exit()
+    #         keys = pygame.key.get_pressed()
+    #         if keys[pygame.K_ESCAPE]:
+    #             sys.exit()
 
-            num_hull_points = len(hull_points)
-            for i in range(num_hull_points):
-                point_a = hull_points[(i + 1) % num_hull_points]
-                point_b = hull_points[i]
+    #         num_hull_points = len(hull_points)
+    #         for i in range(num_hull_points):
+    #             point_a = hull_points[(i + 1) % num_hull_points]
+    #             point_b = hull_points[i]
 
-                pygame.draw.line(screen, red, point_a, point_b)
-                pygame.display.flip()
+    #             pygame.draw.line(screen, red, point_a, point_b)
+    #             pygame.display.flip()
 
-            pygame.display.flip()
-            pygame.display.update()
-            clock.tick(30)
+    #         pygame.display.flip()
+    #         pygame.display.update()
+    #         clock.tick(30)
 
 if __name__ == '__main__':
     unittest.main()

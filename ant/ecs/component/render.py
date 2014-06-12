@@ -4,6 +4,7 @@ from lib.ecs.component.component import Component
 from ant.ecs.component.shape_component import ShapeComponent
 from ant.ecs.component.movement_component import MovementComponent
 from lib.resource_manager import ResourceManager
+from lib.geometry.polygon import Polygon
 
 from ant.settings import SPRITES_FOLDER
 
@@ -33,23 +34,29 @@ class ShapeRenderComponent(RenderComponent):
     def __init__(self, entity):
         super(ShapeRenderComponent, self).__init__(entity)
         self.font = pygame.font.Font(None, 15)
+        self.agent_prototype = Polygon.rectangular_polygon(64, 64)
 
-    def draw(self, screen):
-        color=(0, 115, 115)
-        shape_component = self.entity[ShapeComponent]
-        polygon = shape_component.get_polygon()
-        points = polygon.get_points()
-
+    def draw_points(self, screen, points, color=(155, 155, 10)):
         for point in points:
             pygame.draw.circle(screen, color, (point.x, point.y), 3, 3)
 
-            text = self.font.render('[{}, {}]'.format(point.x, point.y), 1, (155, 155, 10))
+            text = self.font.render('[{}, {}]'.format(point.x, point.y), 1, (37, 4, 52))
             screen.blit(text, text.get_rect(centerx=point.x + 30, centery=point.y))
 
         for i in range(len(points)):
             point_a = points[(i + 1) % len(points)]
             point_b = points[i]
             pygame.draw.line(screen, color, point_a, point_b)
+
+
+    def draw(self, screen):
+        color=(0, 115, 115)
+        shape_component = self.entity[ShapeComponent]
+        polygon = shape_component.get_polygon()
+
+        self.draw_points(screen, polygon.get_points())
+        c_polygon_points = polygon.compute_c_polygon(self.agent_prototype).get_points()
+        self.draw_points(screen, c_polygon_points, (98, 200, 156))
 
 class SimpleRenderComponent(RenderComponent):
     component_id = 'RenderComponent'
