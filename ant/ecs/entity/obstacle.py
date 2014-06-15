@@ -1,5 +1,5 @@
 from ant.ecs.entity.ant_base import AntBase
-from ant.ecs.component.shape_component import ShapeComponent
+from ant.ecs.component.shape import ShapeComponent
 from ant.ecs.component.render import ShapeRenderComponent
 from lib.vec2d import Vec2d
 from lib.ecs.system_manager import SystemManager

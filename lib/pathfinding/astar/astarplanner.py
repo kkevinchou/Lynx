@@ -2,7 +2,7 @@ from lib.vec2d import Vec2d
 from collections import defaultdict
 from Queue import PriorityQueue
 from heapq import heappush, heappop, heapify
-from ant.ecs.component.shape_component import ShapeComponent
+from ant.ecs.component.shape import ShapeComponent
 from lib.geometry.util import (
     distance_between,
     intersect_polygons,

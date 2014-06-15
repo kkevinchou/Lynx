@@ -1,7 +1,7 @@
 import pygame
 
 from lib.ecs.component.component import Component
-from ant.ecs.component.shape_component import ShapeComponent
+from ant.ecs.component.shape import ShapeComponent
 from ant.ecs.component.movement_component import MovementComponent
 from lib.resource_manager import ResourceManager
 from lib.geometry.polygon import Polygon
@@ -29,7 +29,7 @@ class SpriteRenderComponent(RenderComponent):
         screen.blit(self.sprite, self.entity.position)
 
 class ShapeRenderComponent(RenderComponent):
-    component_id = 'RenderComponent'
+    component_id = RenderComponent.component_id
 
     def __init__(self, entity):
         super(ShapeRenderComponent, self).__init__(entity)
@@ -59,7 +59,7 @@ class ShapeRenderComponent(RenderComponent):
         self.draw_points(screen, c_polygon_points, (98, 200, 156))
 
 class SimpleRenderComponent(RenderComponent):
-    component_id = 'RenderComponent'
+    component_id = RenderComponent.component_id
 
     def __init__(self, entity):
         super(SimpleRenderComponent, self).__init__(entity)

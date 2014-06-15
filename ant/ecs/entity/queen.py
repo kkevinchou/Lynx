@@ -6,7 +6,7 @@ from ant.ecs.message_types import MESSAGE_TYPE
 from ant.ecs.component.render import SpriteRenderComponent
 from ant.ecs.component.movement_component import MovementComponent
 from ant.ecs.component.reproduction_component import ReproductionComponent
-from ant.ecs.component.defined_shape_component import DefinedShapeComponent
+from ant.ecs.component.shape import DefinedShapeComponent
 
 class Queen(AntBase):
     system_manager = SystemManager.get_instance()

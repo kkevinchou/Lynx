@@ -3,7 +3,7 @@ import pygame
 from lib.ecs.system.system import System
 from lib.vec2d import Vec2d
 from ant.ecs.component.movement_component import MovementComponent
-from ant.ecs.component.render_component import RenderComponent
+from ant.ecs.component.render import RenderComponent
 from ant.ecs.message_types import MESSAGE_TYPE
 
 class RenderSystem(System):

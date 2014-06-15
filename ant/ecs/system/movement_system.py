@@ -1,7 +1,7 @@
 from lib.ecs.system.system import System
 from lib.geometry.polygon import Polygon
 from ant.ecs.component.movement_component import MovementComponent
-from ant.ecs.component.shape_component import ShapeComponent
+from ant.ecs.component.shape import ShapeComponent
 from ant.ecs.message_types import MESSAGE_TYPE
 from ant.ecs.entity_types import ENTITY_TYPE
 
