@@ -1,4 +1,5 @@
 from lib.ecs.system.system import System
+from lib.geometry.polygon import Polygon
 from ant.ecs.component.movement_component import MovementComponent
 from ant.ecs.component.shape_component import ShapeComponent
 from ant.ecs.message_types import MESSAGE_TYPE
@@ -7,6 +8,7 @@ from ant.ecs.entity_types import ENTITY_TYPE
 class MovementSystem(System):
     def __init__(self, planner=None):
         self.entities = []
+        self.obstacles = []
         self.planner = planner
 
         message_handlers = {
@@ -14,6 +16,8 @@ class MovementSystem(System):
             MESSAGE_TYPE.MOVE_ENTITY: self.handle_move_entity,
             MESSAGE_TYPE.INIT_MOVEMENT_PLANNER: self.handle_init_movement_planner,
         }
+
+        self.agent_prototype = Polygon.rectangular_polygon(64, 64)
 
         super(MovementSystem, self).__init__(message_handlers)
 
@@ -24,9 +28,10 @@ class MovementSystem(System):
         entity = message['entity']
 
         if message['entity_type'] == ENTITY_TYPE.OBSTACLE:
-            self.planner.register_entity(entity)
+            # self.obstacles.append(entity)
+            self.planner.register_obstacle(entity, self.agent_prototype)
         else:
-            self.entities.append(message['entity'])
+            self.entities.append(entity)
 
     def handle_move_entity(self, message):
         entity = message['entity']

@@ -22,6 +22,7 @@ class RenderSystem(System):
             MESSAGE_TYPE.CREATE_ENTITY: self.handle_create_entity,
         }
 
+
         super(RenderSystem, self).__init__(message_handlers)
 
     def clear(self, color=(255, 255, 255)):

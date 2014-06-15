@@ -22,9 +22,9 @@ class AStarPlanner(object):
         for polygon in polygons:
             self.add_polygon(polygon)
 
-    def register_entity(self, entity):
+    def register_obstacle(self, entity, agent):
         shape_component = entity[ShapeComponent]
-        self.add_polygon(shape_component.get_polygon())
+        self.add_polygon(shape_component.get_polygon().compute_c_polygon(agent))
 
     def init(self):
         self.compute_neighbours()

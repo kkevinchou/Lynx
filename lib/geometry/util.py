@@ -115,6 +115,7 @@ def create_polygons(vertex_lists):
 
 def generate_random_polygon(x_min, y_min, x_max, y_max, max_points):
     from lib.geometry.polygon import Polygon
+
     points = []
 
     i = 0
@@ -151,8 +152,6 @@ def generate_convex_hull(points, screen=None):
     if len(points) < 3:
         raise Exception('Cannot generate convex hull for fewer than three points')
 
-    lines_to_draw = []
-    
     pivot_point = get_bottom_right_most_point(points)
     point_to_angle_map = {}
     for point in points:
@@ -165,7 +164,8 @@ def generate_convex_hull(points, screen=None):
 
         point_to_angle_map[point] = angle
 
-    sorted_points = sorted(point_to_angle_map, key=point_to_angle_map.get, reverse=True)
+    sorted_points = sorted(point_to_angle_map.iteritems(), key=lambda tuple: (tuple[1], tuple[0].get_distance(pivot_point)), reverse=True)
+    sorted_points = [x[0] for x in sorted_points]
     sorted_points.append(pivot_point)
 
     hull_points = [pivot_point, sorted_points[0], sorted_points[1]]
@@ -195,7 +195,6 @@ def generate_convex_hull(points, screen=None):
                 hull_points.append(point)
                 next_hull_point_found = True
 
-    # The last point equals the first one, pop it off
     hull_points.pop()
 
     return hull_points
