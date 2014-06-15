@@ -1,1 +1,1 @@
-python test.py
+python2.7-32 test.py
