@@ -113,15 +113,15 @@ def create_polygons(vertex_lists):
 
     return polygons
 
-def generate_random_polygon(x_min, y_min, x_max, y_max, max_points):
+def generate_random_polygon(x_max, y_max, max_points):
     from lib.geometry.polygon import Polygon
 
     points = []
 
     i = 0
     while i < max_points:
-        x = random.randint(x_min, x_max)
-        y = random.randint(y_min, y_max)
+        x = random.randint(0, x_max)
+        y = random.randint(0, y_max)
 
         if Vec2d(x, y) in points:
             continue
@@ -198,3 +198,6 @@ def generate_convex_hull(points, screen=None):
     hull_points.pop()
 
     return hull_points
+
+def copy_points_list(points):
+    return [point.copy() for point in points]

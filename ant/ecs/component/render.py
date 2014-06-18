@@ -52,10 +52,9 @@ class ShapeRenderComponent(RenderComponent):
     def draw(self, screen):
         color=(0, 115, 115)
         shape_component = self.entity[ShapeComponent]
-        polygon = shape_component.get_polygon()
 
-        self.draw_points(screen, polygon.get_points())
-        c_polygon_points = polygon.compute_c_polygon(self.agent_prototype).get_points()
+        self.draw_points(screen, shape_component.get_points())
+        c_polygon_points = shape_component.compute_c_polygon(self.agent_prototype).get_points()
         self.draw_points(screen, c_polygon_points, (98, 200, 156))
 
 class SimpleRenderComponent(RenderComponent):

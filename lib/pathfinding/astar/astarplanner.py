@@ -24,7 +24,7 @@ class AStarPlanner(object):
 
     def register_obstacle(self, entity, agent):
         shape_component = entity[ShapeComponent]
-        self.add_polygon(shape_component.get_polygon().compute_c_polygon(agent))
+        self.add_polygon(shape_component.compute_c_polygon(agent))
 
     def init(self):
         self.compute_neighbours()

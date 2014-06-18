@@ -9,11 +9,11 @@ from ant.ecs.entity_types import ENTITY_TYPE
 class Obstacle(AntBase):
     system_manager = SystemManager.get_instance()
 
-    def __init__(self, x_min, y_min, x_max, y_max, max_points):
-        self.position = Vec2d(0, 0)
+    def __init__(self, position, x_range, y_range, max_points):
+        self.position = position.copy()
         super(Obstacle, self).__init__(
             [
-                ShapeComponent(x_min, y_min, x_max, y_max, max_points, self),
+                ShapeComponent(self, x_range, y_range, max_points),
                 ShapeRenderComponent(self),
             ]
         )
