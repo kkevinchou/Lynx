@@ -1,6 +1,7 @@
 import random
 import unittest
 from lib.geometry.util import generate_convex_hull, generate_random_polygon
+from lib.geometry.polygon import Polygon
 from lib.vec2d import Vec2d
 import sys, pygame
 
@@ -36,6 +37,15 @@ class GeometryTest(unittest.TestCase):
     def test_convex_hull(self):
         points = [Vec2d(1, 0), Vec2d(0, 0), Vec2d(0.5, 0.5),Vec2d(0, 1), Vec2d(1, 1)]
         self.assertEqual(generate_convex_hull(points), [Vec2d(1, 1), Vec2d(1, 0), Vec2d(0, 0), Vec2d(0, 1)])
+
+    def test_contains_point(self):
+        polygon = Polygon([Vec2d(1, 0), Vec2d(0, 0), Vec2d(0, 1), Vec2d(1, 1)])
+        self.assertTrue(polygon.contains_point(Vec2d(0.5, 0.5)))
+        self.assertFalse(polygon.contains_point(Vec2d(2, 0)))
+        self.assertFalse(polygon.contains_point(Vec2d(1, 0)))
+        self.assertFalse(polygon.contains_point(Vec2d(0, 0)))
+        self.assertFalse(polygon.contains_point(Vec2d(0, 1)))
+        self.assertFalse(polygon.contains_point(Vec2d(1, 1)))
 
     # def ztest_visual(self):
     #     pygame.init()

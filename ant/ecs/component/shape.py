@@ -13,6 +13,8 @@ class ShapeComponent(Component):
     def get_points(self):
         return [self.entity.position + point for point in self.polygon.get_points()]
 
+    #TODO : this method should be in Polygon.  Have this method create a new polygon
+    # that has been offsetted by the entity's position
     def compute_c_polygon(self, agent):
         agent_points = copy_points_list(agent.get_points())
 

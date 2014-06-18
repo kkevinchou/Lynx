@@ -28,12 +28,25 @@ class Polygon(object):
         if len(self.points) != len(set(self.points)):
             raise Exception('Points in Polygon must be distinct')
 
+    def contains_point(self, point):
+        num_points = len(self.points)
+
+        for i in range(num_points):
+            current_point = self.points[i]
+            next_point = self.points[(i + 1) % num_points]
+            polygon_vec = next_point - current_point
+            point_vec = point - current_point
+
+            print polygon_vec.cross(point_vec)
+
+            if polygon_vec.cross(point_vec) >= 0:
+                return False
+
+        return True
+
     def get_edges(self):
         num_points = len(self.points)
         return [[self.points[i].copy(), self.points[(i + 1) % num_points].copy()] for i in range(num_points)]
-
-    # def contains_point(self, point):
-    #     for i in range(len(self.poin))
 
     @staticmethod
     def rectangular_polygon(width, height):
