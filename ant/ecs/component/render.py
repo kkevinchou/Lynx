@@ -11,9 +11,6 @@ from ant.settings import SPRITES_FOLDER
 class RenderComponent(Component):
     component_id = 'RenderComponent'
 
-    def __init__(self, entity):
-        self.entity = entity
-
     def draw(self, screen, color=(0, 0, 0)):
         raise NotImplementedError()
 
@@ -22,7 +19,7 @@ class SpriteRenderComponent(RenderComponent):
     resource_manager = ResourceManager.get_instance()
 
     def __init__(self, entity, sprite_file):
-        super(SpriteRenderComponent, self).__init__(entity)
+        self.entity = entity
         self.sprite = SpriteRenderComponent.resource_manager.get_sprite(sprite_file)
 
     def draw(self, screen):
@@ -31,8 +28,8 @@ class SpriteRenderComponent(RenderComponent):
 class ShapeRenderComponent(RenderComponent):
     component_id = RenderComponent.component_id
 
-    def __init__(self, entity):
-        super(ShapeRenderComponent, self).__init__(entity)
+    def __init__(self, shape_component):
+        self.shape_component = shape_component
         self.font = pygame.font.Font(None, 15)
         self.agent_prototype = Polygon.rectangular_polygon(64, 64)
 
@@ -48,13 +45,11 @@ class ShapeRenderComponent(RenderComponent):
             point_b = points[i]
             pygame.draw.line(screen, color, point_a, point_b)
 
-
     def draw(self, screen):
         color=(0, 115, 115)
-        shape_component = self.entity[ShapeComponent]
 
-        self.draw_points(screen, shape_component.get_points())
-        c_polygon_points = shape_component.compute_c_polygon(self.agent_prototype).get_points()
+        self.draw_points(screen, self.shape_component.get_points())
+        c_polygon_points = self.shape_component.compute_c_polygon(self.agent_prototype).get_points()
         self.draw_points(screen, c_polygon_points, (98, 200, 156))
 
 class SimpleRenderComponent(RenderComponent):

@@ -11,10 +11,12 @@ class Obstacle(AntBase):
 
     def __init__(self, position, x_range, y_range, max_points):
         self.position = position.copy()
+
+        shape_component = ShapeComponent(self, x_range, y_range, max_points)
         super(Obstacle, self).__init__(
             [
-                ShapeComponent(self, x_range, y_range, max_points),
-                ShapeRenderComponent(self),
+                shape_component,
+                ShapeRenderComponent(shape_component),
             ]
         )
 
