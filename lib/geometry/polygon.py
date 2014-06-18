@@ -37,8 +37,6 @@ class Polygon(object):
             polygon_vec = next_point - current_point
             point_vec = point - current_point
 
-            print polygon_vec.cross(point_vec)
-
             if polygon_vec.cross(point_vec) >= 0:
                 return False
 

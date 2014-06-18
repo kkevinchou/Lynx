@@ -44,12 +44,15 @@ def run():
 
     system_manager = set_up_systems()
 
-    obstacle1 = Obstacle(Vec2d(100, 50), 100, 100, 10)
-    obstacle2 = Obstacle(Vec2d(100, 250), 100, 100, 10)
-    obstacle3 = Obstacle(Vec2d(100, 450), 100, 100, 10)
+    obstacle1 = Obstacle(Vec2d(250, 50), 100, 100, 10)
+    obstacle2 = Obstacle(Vec2d(250, 250), 100, 100, 10)
+    obstacle3 = Obstacle(Vec2d(250, 450), 100, 100, 10)
     obstacle3 = Obstacle(Vec2d(300, 50), 100, 100, 10)
     obstacle3 = Obstacle(Vec2d(300, 250), 100, 100, 10)
     obstacle3 = Obstacle(Vec2d(300, 450), 100, 100, 10)
+    obstacle3 = Obstacle(Vec2d(400, 50), 100, 100, 10)
+    obstacle3 = Obstacle(Vec2d(400, 250), 100, 100, 10)
+    obstacle3 = Obstacle(Vec2d(400, 450), 100, 100, 10)
 
     system_manager.send_message({'message_type': MESSAGE_TYPE.INIT_MOVEMENT_PLANNER})
 

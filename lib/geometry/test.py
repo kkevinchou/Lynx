@@ -47,6 +47,11 @@ class GeometryTest(unittest.TestCase):
         self.assertFalse(polygon.contains_point(Vec2d(0, 1)))
         self.assertFalse(polygon.contains_point(Vec2d(1, 1)))
 
+    def test_contains_point2(self):
+        polygon = Polygon([Vec2d(270, 338), Vec2d(333, 336), Vec2d(338, 293), Vec2d(338, 229), Vec2d(289, 196), Vec2d(225, 196), Vec2d(190, 262), Vec2d(190, 326), Vec2d(206, 338)])
+        self.assertTrue(polygon.contains_point(Vec2d(241, 292)))
+        self.assertFalse(polygon.contains_point(Vec2d(396, 391)))
+
     # def ztest_visual(self):
     #     pygame.init()
     #     size = width, height = 320, 240

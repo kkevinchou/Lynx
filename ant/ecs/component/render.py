@@ -38,7 +38,7 @@ class ShapeRenderComponent(RenderComponent):
             pygame.draw.circle(screen, color, (point.x, point.y), 3, 3)
 
             text = self.font.render('[{}, {}]'.format(point.x, point.y), 1, (37, 4, 52))
-            screen.blit(text, text.get_rect(centerx=point.x + 30, centery=point.y))
+            # screen.blit(text, text.get_rect(centerx=point.x + 30, centery=point.y))
 
         for i in range(len(points)):
             point_a = points[(i + 1) % len(points)]
@@ -50,7 +50,7 @@ class ShapeRenderComponent(RenderComponent):
 
         self.draw_points(screen, self.shape_component.get_points())
         c_polygon_points = self.shape_component.compute_c_polygon(self.agent_prototype).get_points()
-        self.draw_points(screen, c_polygon_points, (98, 200, 156))
+        # self.draw_points(screen, c_polygon_points, (98, 200, 156))
 
 class SimpleRenderComponent(RenderComponent):
     component_id = RenderComponent.component_id

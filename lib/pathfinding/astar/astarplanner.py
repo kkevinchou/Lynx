@@ -29,10 +29,19 @@ class AStarPlanner(object):
     def init(self):
         self.compute_neighbours()
 
+    # TODO: optimize this (spatial partitioning?)
     def compute_neighbours(self):
         for node_a in self.nodes:
             for node_b in self.nodes:
                 if node_a == node_b:
+                    continue
+
+                node_within_polygon = False
+                for polygon in self.polygons:
+                    if polygon.contains_point(node_a) or polygon.contains_point(node_b):
+                        node_within_polygon = True
+
+                if node_within_polygon:
                     continue
 
                 if not intersect_polygons([node_a, node_b], self.polygons):
