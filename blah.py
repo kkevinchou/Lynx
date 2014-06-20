@@ -63,20 +63,16 @@ def run():
 
     while True:
         system_manager.update(1 / float(30))
-
-        if pygame.mouse.get_pressed()[0]:
-            mouse_pos = pygame.mouse.get_pos()
-            system_manager.send_message({
-                'message_type': MESSAGE_TYPE.MOVE_ENTITY,
-                'entity': queen,
-                'goal': mouse_pos,
-            })
-        elif pygame.mouse.get_pressed()[2]:
-            break
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit = True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                system_manager.send_message({
+                    'message_type': MESSAGE_TYPE.MOVE_ENTITY,
+                    'entity': queen,
+                    'goal': mouse_pos,
+                })
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
