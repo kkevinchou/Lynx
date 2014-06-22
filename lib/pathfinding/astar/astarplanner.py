@@ -98,6 +98,10 @@ class AStarPlanner(object):
         if not intersect_polygons([start_node, goal_node], self.polygons):
             return [goal_node]
 
+        for polygon in self.polygons:
+            if polygon.contains_point(Vec2d(x2, y2)):
+                return None
+
         self.init_start_goal(start_node, goal_node)
 
         closed_set = set()

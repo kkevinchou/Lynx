@@ -48,10 +48,12 @@ class Polygon(object):
 
     @staticmethod
     def rectangular_polygon(width, height):
+        y_offset = int(height/2)
+        x_offset = int(width/2)
         points = [
-            Vec2d(0, 0),
-            Vec2d(0, height),
-            Vec2d(width, height),
-            Vec2d(width, 0)
+            Vec2d(-x_offset, -y_offset),
+            Vec2d(-x_offset, height - y_offset),
+            Vec2d(width - x_offset, height - y_offset),
+            Vec2d(width - x_offset, -y_offset)
         ]
         return Polygon(points)

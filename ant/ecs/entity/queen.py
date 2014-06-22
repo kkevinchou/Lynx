@@ -16,7 +16,7 @@ class Queen(AntBase):
             [
                 ReproductionComponent(),
                 MovementComponent(),
-                SpriteRenderComponent(self, 'mite.png'),
+                SpriteRenderComponent(self, 'mite.png', 64, 64),
             ]
         )
 
