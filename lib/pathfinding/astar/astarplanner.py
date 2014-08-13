@@ -2,7 +2,9 @@ from lib.vec2d import Vec2d
 from collections import defaultdict
 from Queue import PriorityQueue
 from heapq import heappush, heappop, heapify
+
 from ant.ecs.component.shape import ShapeComponent
+
 from lib.geometry.util import (
     distance_between,
     intersect_polygons,
@@ -13,6 +15,7 @@ class AStarPlanner(object):
         self.polygons = []
         self.nodes = []
         self.neighbors = defaultdict(list)
+        self.nodes_to_remove = []
 
     def add_polygon(self, polygon):
         self.polygons.append(polygon)
@@ -27,50 +30,58 @@ class AStarPlanner(object):
         self.add_polygon(shape_component.compute_c_polygon(agent))
 
     def init(self):
-        self.compute_neighbours()
+        self.compute_all_neighbours()
 
     # TODO: optimize this (spatial partitioning?)
-    def compute_neighbours(self):
+    def compute_all_neighbours(self):
         for node_a in self.nodes:
             for node_b in self.nodes:
                 if node_a == node_b:
                     continue
 
-                node_within_polygon = False
                 for polygon in self.polygons:
                     if polygon.contains_point(node_a) or polygon.contains_point(node_b):
                         node_within_polygon = True
-
-                if node_within_polygon:
-                    continue
+                        continue
 
                 if not intersect_polygons([node_a, node_b], self.polygons):
                     self.neighbors[node_a].append(node_b)
 
+    def polygons_contain_node(self, node):
+        for polygon in self.polygons:
+            if polygon.contains_point(node):
+                return True
+
+        return False
+
+    def compute_neighbors(self, node):
+        if self.polygons_contain_node(node):
+            # Node is in a polygon, therefore it has no neighbors
+            return
+            
+        nodes_not_within_polygons = [_node for _node in self.nodes if not self.polygons_contain_node(_node)]
+        for _node in nodes_not_within_polygons: 
+            if node == _node:
+                continue
+
+            if not intersect_polygons([node_a, node_b], self.polygons):
+                self.neighbors[node_a].append(node_b)            
+
     def init_start_goal(self, start_node, goal_node):
-        self.clean_start_node = True
-        self.clean_goal_node = True
+        self.nodes_to_remove.append(start_node)
+        self.nodes_to_remove.append(goal_node)
 
         for start_goal_node in [start_node, goal_node]:
             for node in self.nodes:
-                if start_goal_node == node:
-                    if start_goal_node == start_node:
-                        self.clean_start_node = False
-                    elif start_goal_node == goal_node:
-                        self.clean_goal_node = False
-                elif not intersect_polygons([start_goal_node, node], self.polygons):
+                if node in (start_node, goal_node):
+                    self.nodes_to_remove.remove(node)
+
+                if not intersect_polygons([start_goal_node, node], self.polygons):
                     if node not in self.neighbors[start_goal_node]:
                         self.neighbors[start_goal_node].append(node)
 
                     if start_goal_node not in self.neighbors[node]:
                         self.neighbors[node].append(start_goal_node)
-
-    def cleanup_start_goal(self, start_node, goal_node):
-        if self.clean_start_node:
-            self.remove_node(start_node)
-
-        if self.clean_goal_node:
-            self.remove_node(goal_node)
 
     def remove_node(self, r_node):
         try:
@@ -80,7 +91,7 @@ class AStarPlanner(object):
 
         self.neighbors.pop(r_node)
 
-        for node, neighbors in self.neighbors.iteritems():
+        for neighbors in self.neighbors.itervalues():
             try:
                 neighbors.remove(r_node)
             except ValueError:
@@ -161,9 +172,8 @@ class AStarPlanner(object):
         path.pop()
         path.reverse()
 
-        self.cleanup_start_goal(start_node, goal_node)
-
+        for node in self.nodes_to_remove:
+            self.remove_node(node)
+        self.nodes_to_remove = []
 
         return path
-        
-
