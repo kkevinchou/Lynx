@@ -55,7 +55,7 @@ class ShapeRenderComponent(RenderComponent):
         color=(0, 115, 115)
 
         self.draw_edges(screen, self.shape_component.get_points())
-        self.draw_c_polygon(screen)
+        # self.draw_c_polygon(screen)
 
 class SimpleRenderComponent(RenderComponent):
     component_id = RenderComponent.component_id
