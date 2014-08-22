@@ -105,15 +105,19 @@ class AStarPlanner(object):
         self.init_start_goal(start_node, goal_node)
 
         closed_set = set()
-        open_queue = [(0, start_node)]
+        open_set = set([start_node])
 
         path_map = {}
         gx_map = { start_node: 0 }
+        hx_map = {}
 
-        while len(open_queue) > 0:
-            current_node_cost, current_node = heappop(open_queue)
+        while len(open_set) > 0:
+            current_node = min(open_set, key=lambda node:gx_map[node] + hx_map.setdefault(node, distance_between(node, goal_node)))
             if current_node == goal_node:
                 break
+
+            open_set.remove(current_node)
+            closed_set.add(current_node)
 
             neighbors = self.neighbors[current_node]
 
@@ -122,31 +126,17 @@ class AStarPlanner(object):
                     continue
 
                 gx = distance_between(neighbor, current_node) + gx_map[current_node]
-                hx = distance_between(neighbor, goal_node)
+                hx = hx_map.setdefault(neighbor, distance_between(neighbor, goal_node))
 
-                neighbor_in_open_queue = False
-
-                for cost, node in open_queue:
-                    if node == neighbor:
-                        neighbor_in_open_queue = True
-
-                if neighbor_in_open_queue:
+                if neighbor in open_set:
                     if gx < gx_map[neighbor]:
-                        open_queue.remove((gx_map[neighbor] + hx, neighbor))
                         gx_map[neighbor] = gx
                         path_map[neighbor] = current_node
-
-                        # Update priority
-                        # Note, this runs in linear time, we could probably do something more efficient here
-
-                        heappush(open_queue, (gx + hx, neighbor))
-                        heapify(open_queue)
                 else:
                     gx_map[neighbor] = gx
                     path_map[neighbor] = current_node
-                    heappush(open_queue, (gx + hx, neighbor))
+                    open_set.add(neighbor)
 
-            closed_set.add(current_node)
 
         if current_node != goal_node:
             return None
@@ -162,8 +152,5 @@ class AStarPlanner(object):
         path.reverse()
 
         self.cleanup_start_goal(start_node, goal_node)
-
-
-        return path
         
-
+        return path

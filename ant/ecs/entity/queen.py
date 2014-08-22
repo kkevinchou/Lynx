@@ -15,7 +15,7 @@ class Queen(AntBase):
         super(Queen, self).__init__(
             [
                 ReproductionComponent(),
-                MovementComponent(),
+                MovementComponent(speed=150),
                 SpriteRenderComponent(self, 'mite.png', 64, 64),
             ]
         )
